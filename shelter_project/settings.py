@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 #    'django.contrib.contenttypes',
 # Create MongoDB-compatible app configs
 # This matches MongoDB’s official guidance for Django’s contrib apps.
-
+    'animal.apps.AnimalConfig',
     'shelter_project.apps.MongoAdminConfig',
     'shelter_project.apps.MongoAuthConfig',
     'shelter_project.apps.MongoContentTypesConfig',
@@ -153,3 +153,5 @@ MIGRATION_MODULES = {
     "auth": "mongo_migrations.auth",
     "contenttypes": "mongo_migrations.contenttypes",
 }
+
+DEFAULT_AUTO_FIELD = "django_mongodb_backend.fields.ObjectIdAutoField"
