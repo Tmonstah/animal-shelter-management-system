@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animals Available for Adoption</title>
+</head>
+<body>
+    <h1>Meet Our Available Pets</h1>
+
+    <div class="animal-grid">
+        {% for animal in animals %}
+            <div class="animal-card">
+                <h2>{{ animal.name }}</h2>
+                <p><strong>Breed:</strong> {{ animal.breed }}</p>
+                <p><strong>Age:</strong> {{ animal.age }} years old</p>
+                <p><strong>Personality:</strong> {{ animal.personality_desc }}</p>
+                <hr>
+            </div>
+        {% empty %}
+            <p>No animals are currently available for adoption. Check back soon!</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
