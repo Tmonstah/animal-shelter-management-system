@@ -1,6 +1,8 @@
 from django.db import models
 
 # Animal model
+# TODO add option for picture, intake_day, adoption_day
+#       animal_type
 class Animal(models.Model):
     # Animals gender and hair type have predefined choices.
     MALE = "M"
