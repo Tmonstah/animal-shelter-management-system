@@ -19,7 +19,7 @@ class Animal(models.Model):
     breed = models.CharField(max_length=50)
     hair_type = models.CharField(max_length=20, choices=ANIMAL_HAIR_TYPE_CHOICES)
     medical_desc = models.CharField(max_length=300)
-    availible = models.BooleanField(default=True)
+    available = models.BooleanField(default=True)
 
 def __str__(self):
-    return self.title
+    return self.name
