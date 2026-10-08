@@ -41,6 +41,20 @@ docker compose down
 Run Django Commands:
 docker compose exec web python manage.py migrate
 
+Workflow to test
+---------------------------------------------
+With the docker running run the following command.
+    {Model} is a parameter to which tests you want to run. i.e animal will run the
+    tests found in tests.py for the animal folder.
+    --settings=shelter_project.settings_test tells django to use the settings_test.py
+    file in shelter_project. This is important as it tells django to use the sqlite3 test
+    database instead of the main mongoDB database from the production version. This is
+    how we can review business logic and views without needing to mess with the production database.
+    Additionally the database created has a lifetime of the test, so when the test finishes
+    the database is destroyed.
+
+docker compose exec web python manage.py test {model} --settings=shelter_project.settings_test
+
 WorkFlow to add personal or assigned feature
 ---------------------------------------------
 
