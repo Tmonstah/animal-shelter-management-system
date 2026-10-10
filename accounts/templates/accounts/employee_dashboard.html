@@ -4,13 +4,45 @@
     <title>Employee Dashboard</title>
 </head>
 <body>
-    <!-- Main dashboard page for employee accounts. -->
+    <!-- Main dashboard for employee accounts. -->
     <h1>Employee Dashboard</h1>
 
-    <!-- Logout link for the current user. -->
+    <!-- Log the current employee out of the system. -->
     <a href="{% url 'logout' %}">Logout</a>
 
-    <!-- Temporary text used to verify the employee portal works. -->
-    <p>Employee portal is working.</p>
+    <hr>
+
+    <!-- Show the animal management section only if the employee can view animals. -->
+    {% if perms.animal.view_animal %}
+        <h2>Animal Management</h2>
+
+        <!-- Show add option only if the employee has permission to add animals. -->
+       
+        {% if perms.animal.add_animal %}
+            <p>Add Animal</p>
+        {% endif %}
+
+       
+     <!-- Show edit option only if the employee has permission to change animals. -->
+        {% if perms.animal.change_animal %}
+            <p>Edit Animal</p>
+       
+        {% endif %}
+
+       
+
+	 <!-- Show delete option only if the employee has permission to delete animals. -->
+        
+	{% if perms.animal.delete_animal %}
+        
+	    <p>Delete Animal</p>
+        {% endif %}
+
+        <!-- Anyone with view permission can see animal records. -->
+        
+	<p>View Animals</p>
+    {% endif %}
 </body>
 </html>
+
+
