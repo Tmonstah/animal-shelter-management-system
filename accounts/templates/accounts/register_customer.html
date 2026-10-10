@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Registration</title>
+</head>
+<body>
+    <!-- Registration page for new customer accounts. -->
+    <h1>Create Customer Account</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ registration_form.as_p }}
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </p>
+</body>
+</html>

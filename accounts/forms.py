@@ -1,0 +1,18 @@
+from django.contrib.auth.forms import UserCreationForm
+
+from .models import User
+
+#This gives customers a safe registration form with Django’s built-in password validation
+
+class CustomerRegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        )
+

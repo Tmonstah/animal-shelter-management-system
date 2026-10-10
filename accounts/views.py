@@ -3,8 +3,27 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib.auth import logout
+from .forms import CustomerRegistrationForm
 
-@login_required
+
+
+def register_customer(request):
+    if request.method == "POST":
+        registration_form = CustomerRegistrationForm(request.POST)
+
+        if registration_form.is_valid():
+            registration_form.save()
+            return redirect("login")
+    else:
+        registration_form = CustomerRegistrationForm()
+
+    return render(
+        request,
+        "accounts/register_customer.html",
+        {"registration_form": registration_form},
+    )
+
+@login_required #this is to prevent false access to different pages
 def customer_dashboard(request):
     if request.user.is_staff:
         return HttpResponseForbidden("Employees cannot access the customer portal.")
@@ -30,10 +49,14 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
+            if user.is_superuser:
+                return redirect("/admin/")
+
             if user.is_staff:
                 return redirect("employee_dashboard")
 
             return redirect("customer_dashboard")
+
 
         return render(
             request,
