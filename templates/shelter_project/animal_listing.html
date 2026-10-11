@@ -1,15 +1,19 @@
+{% extends 'shelter_project/base.html' %}
+{% load static %}
+
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Animals Available for Adoption</title>
 </head>
 <body>
-    <h1>Meet Our Available Pets</h1>
+    <h2>Meet Our Available Pets</h2>
 
     <div class="animal-grid">
         {% for animal in animals %}
             <div class="animal-card">
-                <h2>{{ animal.name }}</h2>
+                <h3>{{ animal.name }}</h3>
                 {% if animal.image %}
                     <img src="{{ animal.image.url }}"
                         width="150">
@@ -25,3 +29,4 @@
     </div>
 </body>
 </html>
+{% endblock %}

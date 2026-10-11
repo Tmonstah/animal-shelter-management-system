@@ -19,12 +19,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from animal import views
+from animal import views as animal_views
+from shelter_project import views as shelter_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('animals/', views.animal_list, name='animal_list'),
+    path('animals/', animal_views.animal_list, name='animal_list'),
+    path('home/', shelter_views.home, name='home')
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
