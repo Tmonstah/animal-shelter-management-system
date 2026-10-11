@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib.auth import logout
 from .forms import CustomerRegistrationForm
-
+from .models import EmployeeAccessRequest, EmployeeInvite
 
 
 def register_customer(request):
@@ -12,16 +12,45 @@ def register_customer(request):
         registration_form = CustomerRegistrationForm(request.POST)
 
         if registration_form.is_valid():
-            registration_form.save()
+            
+            user = registration_form.save()# Create the user account after all registration fields are validated.
+
+            
+            invite_code = registration_form.cleaned_data.get(   # Check whether the registrant supplied an employee invite code.
+                "employee_invite_code"
+            )
+
+            if invite_code:
+        
+                employee_invite = EmployeeInvite.objects.get(   #Verfication of Invite and Email
+                    invite_code=invite_code,
+                    is_used=False,
+                )
+
+                
+                EmployeeAccessRequest.objects.create(  # Change status to Pending for review of SuperUser
+                    user=user,
+                    invite=employee_invite,
+                    status="pending",
+                )
+
+                # Prevent Duplicates.
+                employee_invite.is_used = True
+                employee_invite.save()
+
             return redirect("login")
+
     else:
         registration_form = CustomerRegistrationForm()
 
     return render(
+        
         request,
         "accounts/register_customer.html",
         {"registration_form": registration_form},
     )
+
+
 
 @login_required #this is to prevent false access to different pages
 def customer_dashboard(request):
