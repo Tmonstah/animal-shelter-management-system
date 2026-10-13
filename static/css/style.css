@@ -1,0 +1,68 @@
+/*Setting up all h1 types */
+.shelter{
+    text-align: left;
+    background-color: rgb(16, 26, 82);
+    display: flex;
+    flex-direction: column;
+    padding: none;
+    color: rgb(255, 255, 255);
+    margin: 0;
+    font-family: Arial;
+}
+
+/* navigation bar style */
+.nav_bar ul{
+    background-color: rgb(16, 26, 82);
+    list-style-type: none;
+    margin-top: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    gap: 20px;
+}
+.nav_bar ul li{
+    float: left;
+}
+.nav_bar ul li a{
+    color:  rgb(255, 255, 255);
+    text-align: center;
+    padding: 10px 10 px;
+    text-decoration: None;
+}
+.nav_bar ul li a:hover {
+    background-color: rgb(69, 100, 240);
+}
+
+/* Main body style for every page */
+.main {
+    font-family: Arial;
+    color: rgb(0, 0, 0);
+}
+
+body {
+    background-color: rgb(247, 248, 242);
+}
+h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+p {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    text-align: left;
+    background-color: rgb(16, 26, 82);
+    display: flex;
+    flex-direction: column;
+    padding: none;
+    color: rgb(255, 255, 255);
+    margin: 0;
+    font-family: Arial;
+    width: 100%;
+}

@@ -16,10 +16,16 @@ class Animal(models.Model):
     gender = models.CharField(max_length=6, choices=ANIMAL_GENDER_CHOICES)
     personality_desc = models.CharField(max_length=300)
     coloration = models.CharField(max_length=50)
+    age = models.IntegerField(default=0)
     breed = models.CharField(max_length=50)
     hair_type = models.CharField(max_length=20, choices=ANIMAL_HAIR_TYPE_CHOICES)
     medical_desc = models.CharField(max_length=300)
     available = models.BooleanField(default=True)
+    image = models.ImageField(
+        upload_to='medial/animal_pictures/',
+        blank=True,
+        null=True
+    )
 
 def __str__(self):
     return self.name

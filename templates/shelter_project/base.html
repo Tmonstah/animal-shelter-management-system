@@ -1,0 +1,37 @@
+<!-- This is the base html template for our project.
+ It allows for header, navigation, footer, etc to be
+ on multiple pages without having to add it to every
+ html template. -->
+ 
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Paw and Order Rescue Center</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="shelter">
+        <div>
+            <h1>Paw & Order Rescue Center</h1>
+            <p>Protecting and serving our furry friends</p>
+        </div>
+        <div>
+            {% include 'shelter_project/navbar.html' %}
+        </div>
+    </header>
+    
+
+    <main class="main">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>Contact Us: 123-456-789</p>
+        <p>Address: 123 Paw Order Lane, animal town</p>
+    </footer>
+</body>
+
+</html>
