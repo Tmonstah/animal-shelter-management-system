@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Employee Profile</title>
-</head>
-<body>
-    <h1>Employee Profile</h1>
-    
-    <p>
-        <a href="{% url 'employee_dashboard' %}">Back to Dashboard</a>
-    </p>
+{% extends "shelter_project/base.html" %}
 
-    <!-- Employee profile form -->
-    <form method="post">
-        {% csrf_token %}
+{% block content %}
 
-        {{ employee_profile_form.as_p }}
+<h1>Employee Profile</h1>
+<!-- Return to the employee dashboard-->
+<p>
+    <a href="{% url 'employee_dashboard' %}">Back to Dashboard</a>
+</p>
 
-        <button type="submit">Save Profile</button>
-    </form>
+<!-- Employee profile form-->
+<form method="post">
+    {% csrf_token %}
 
-    <p>
-        <a href="{% url 'logout' %}">Logout</a>
-    </p>
-</body>
-</html>
+    {{ employee_profile_form.as_p }}
+
+    <button type="submit">Save Profile</button>
+</form>
+<p>
+    <a href="{% url 'logout' %}">Logout</a>
+</p>
+
+{% endblock %}

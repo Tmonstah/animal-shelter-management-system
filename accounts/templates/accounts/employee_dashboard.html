@@ -1,53 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Employee Dashboard</title>
-</head>
-<body>
-    <!-- dashboard  -->
-    <h1>Employee Dashboard</h1>
+{% extends "shelter_project/base.html" %}
 
-    <a href="{% url 'logout' %}">Logout</a>
+{% block content %}
 
-    <hr>
+<!-- Employee dashboard-->
+<h1>Employee Dashboard</h1>
 
-    <!-- animal management section only visible if the employee has permission -->
-    {% if perms.animal.view_animal %}
-        <h2>Animal Management</h2>
+<p>
+    Welcome, {{ request.user.first_name|default:request.user.username }}.
+</p>
 
-        <!-- add option only if the employee has permission -->
-       
-        {% if perms.animal.add_animal %}
-            <p>Add Animal</p>
-        {% endif %}
+<hr>
+<!-- Animal management section only visible with permission-->
+{% if perms.animal.view_animal %}
+    <h2>Animal Management</h2>
 
-       
-     <!-- edit option only if the employee has permission  -->
-        {% if perms.animal.change_animal %}
-            <p>Edit Animal</p>
-       
-        {% endif %}
-
-       
-
-	 <!--delete option only if the employee has permission -->
-        
-	{% if perms.animal.delete_animal %}
-        
-	    <p>Delete Animal</p>
-        {% endif %}
-
-        <!-- only if view option is enabled -->
-        
-	<p>View Animals</p>
+    {% if perms.animal.add_animal %}
+        <p>Add Animal</p>
     {% endif %}
 
-    <!-- Employee Profile -->
+    {% if perms.animal.change_animal %}
+        <p>Edit Animal</p>
+    {% endif %}
+
+    {% if perms.animal.delete_animal %}
+        <p>Delete Animal</p>
+    {% endif %}
+
     <p>
-        <a href="{% url 'employee_profile' %}">My Profile</a>
+        <a href="/animals/">View Animals</a>
     </p>
+{% endif %}
 
-</body>
-</html>
+<!-- Employee profile management-->
+<p>
+    <a href="{% url 'employee_profile' %}">My Profile</a>
+</p>
 
+<p>
+    <a href="{% url 'logout' %}">Logout</a>
+</p>
 
+{% endblock %}

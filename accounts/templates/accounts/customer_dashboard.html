@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Customer Dashboard</title>
-</head>
-<body>
-    <!-- Dashboard -->
-    <h1>Customer Dashboard</h1>
-    
-    <a href="{% url 'logout' %}">Logout</a>
+{% extends "shelter_project/base.html" %}
 
-    <p>This is a good shelter -Customer</p>
-    
-    <!-- Edit Profile -->
-    <p>
-        <a href="{% url 'customer_profile' %}">My Profile</a>
-    </p>
-</body>
-</html>
+{% block content %}
+
+<!-- Customer dashboard-->
+<h1>Customer Dashboard</h1>
+
+<p>Welcome, {{ request.user.first_name|default:request.user.username }}.</p>
+
+<!-- Customer profile management-->
+<p>
+    <a href="{% url 'customer_profile' %}">My Profile</a>
+</p>
+
+<p>
+    <a href="{% url 'logout' %}">Logout</a>
+</p>
+
+{% endblock %}

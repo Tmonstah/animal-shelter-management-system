@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Registration</title>
-</head>
-<body>
-    <!-- Registration page for new customer accounts. -->
-    <h1>Create Account</h1>
+{% extends "shelter_project/base.html" %}
 
-    <form method="post">
-        {% csrf_token %}
+{% block content %}
 
-        {{ registration_form.as_p }}
+<!-- Registration page -->
+<h1>Create Account</h1>
 
-        <button type="submit">Register</button>
-    </form>
+<form method="post">
+    {% csrf_token %}
 
-    <p>
-        Already have an account?
-        <a href="{% url 'login' %}">Login</a>
-    </p>
-</body>
-</html>
+    {{ registration_form.as_p }}
+
+    <button type="submit">Register</button>
+</form>
+
+<p>
+    Already have an account?
+    <a href="{% url 'login' %}">Login</a>
+</p>
+
+{% endblock %}
