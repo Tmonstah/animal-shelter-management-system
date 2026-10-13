@@ -4,13 +4,16 @@
     <title>Customer Dashboard</title>
 </head>
 <body>
-    <!-- Main dashboard page for customer accounts. -->
+    <!-- Dashboard -->
     <h1>Customer Dashboard</h1>
     
-    <!-- Logout link for the current user. -->
     <a href="{% url 'logout' %}">Logout</a>
 
-    <!-- Temporary text used to verify the customer portal works. -->
-    <p>Customer portal is working.</p>
+    <p>This is a good shelter -Customer</p>
+    
+    <!-- Edit Profile -->
+    <p>
+        <a href="{% url 'customer_profile' %}">My Profile</a>
+    </p>
 </body>
 </html>

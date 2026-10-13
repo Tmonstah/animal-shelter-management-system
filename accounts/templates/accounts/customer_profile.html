@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Profile</title>
+</head>
+<body>
+    <!-- Page where customers can create or update their profile information -->
+    <h1>Customer Profile</h1>
+
+    <!-- Return to the customer dashboard -->
+    <p>
+        <a href="{% url 'customer_dashboard' %}">Back to Dashboard</a>
+    </p>
+
+    <!-- Customer profile form -->
+    <form method="post">
+        {% csrf_token %}
+
+        {{ customer_profile_form.as_p }}
+
+        <button type="submit">Save Profile</button>
+    </form>
+    <p>
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+</body>
+</html>
