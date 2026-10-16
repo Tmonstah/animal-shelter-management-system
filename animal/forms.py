@@ -4,6 +4,7 @@ from .models import Animal
 
 
 class AnimalFilterForm(forms.Form):
+    name = forms.CharField(required=False, label="Search by name")
     breed = forms.ChoiceField(required=False, label="Breed")
     gender = forms.ChoiceField(required=False, label="Gender")
     min_age = forms.IntegerField(required=False, min_value=0, label="Minimum age")
