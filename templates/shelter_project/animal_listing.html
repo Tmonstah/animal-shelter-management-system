@@ -10,6 +10,12 @@
 <body>
     <h2>Meet Our Available Pets</h2>
 
+    <form method="get">
+        {{ filter_form.as_p }}
+        <button type="submit">Filter animals</button>
+        <a href="{% url 'animal_list' %}">Clear filters</a>
+    </form>
+
     <div class="animal-grid">
         {% for animal in animals %}
             <div class="animal-card">
