@@ -11,6 +11,10 @@ def animal_list(request):
 
     if filter_form.is_valid():
         filters = filter_form.cleaned_data
+        if filters["name"]:
+            available_animals = available_animals.filter(
+                name__icontains=filters["name"]
+            )
         if filters["breed"]:
             available_animals = available_animals.filter(breed=filters["breed"])
         if filters["gender"]:

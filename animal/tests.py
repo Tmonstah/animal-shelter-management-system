@@ -59,6 +59,29 @@ class AnimalListViewTests(TestCase):
         self.assertNotContains(response, "Buddy")
         self.assertNotContains(response, "Shadow")
 
+    def test_searches_by_exact_match(self):
+        response = self.client.get(reverse("animal_list"), {"name": "Shadow"})
+
+        self.assertContains(response, "Shadow")
+        self.assertNotContains(response, "Buddy")
+        self.assertNotContains(response, "Luna")
+
+    def test_searches_animals_by_case_insensitive_partial_name(self):
+        response = self.client.get(reverse("animal_list"), {"name": "UN"})
+
+        self.assertContains(response, "Luna")
+        self.assertNotContains(response, "Buddy")
+        self.assertNotContains(response, "Shadow")
+
+    def test_search_combines_with_other_filters(self):
+        response = self.client.get(
+            reverse("animal_list"), {"name": "u", "breed": "Mixed"}
+        )
+
+        self.assertContains(response, "Buddy")
+        self.assertNotContains(response, "Luna")
+        self.assertNotContains(response, "Shadow")
+
     def test_filters_animals_by_gender(self):
         response = self.client.get(reverse("animal_list"), {"gender": "F"})
 
