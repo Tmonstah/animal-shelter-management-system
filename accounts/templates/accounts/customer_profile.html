@@ -1,0 +1,26 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<!-- Customer profile page. -->
+<h1>Customer Profile</h1>
+
+<!-- Return to the customer dashboard-->
+<p>
+    <a href="{% url 'customer_dashboard' %}">Back to Dashboard</a>
+</p>
+
+<!-- Customer profile form-->
+<form method="post">
+    {% csrf_token %}
+
+    {{ customer_profile_form.as_p }}
+
+    <button type="submit">Save Profile</button>
+</form>
+
+<p>
+    <a href="{% url 'logout' %}">Logout</a>
+</p>
+
+{% endblock %}

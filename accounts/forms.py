@@ -1,17 +1,37 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import EmployeeInvite, User
+from .models import EmployeeProfile, CustomerProfile, EmployeeInvite, User
 
-#TODO add vailidators for field types
-#   http uses strings to pass information, it will technically 
-#   allow a username with all numbers, though it may not be desireable
+
+class CustomerProfileForm(forms.ModelForm):
+    # Form used by customers to create or update their profile information.
+    class Meta:
+        model = CustomerProfile
+        fields = (
+            "phone_number",
+            "address_line_1",
+            "address_line_2",
+            "city",
+            "state",
+            "postal_code",
+        )
+
+class EmployeeProfileForm(forms.ModelForm): #Employee form to creat update Metadata
+    class Meta:
+        model = EmployeeProfile
+        fields = (
+            "phone_number",
+            "employee_id",
+            "job_title",
+            "department",
+            "hire_date",
+        )
+
 class CustomerRegistrationForm(UserCreationForm):
-    
     employee_invite_code = forms.CharField(
         max_length=20,
         required=False,
         label="Employee Invite Code (Employee only)",
-    
     )
 
     class Meta:
@@ -29,8 +49,7 @@ class CustomerRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Make all normal account registration fields mandatory.
-       
+        # Make all fields mandatory to proceed
         self.fields["username"].required = True
         self.fields["first_name"].required = True
         self.fields["last_name"].required = True
@@ -63,7 +82,6 @@ class CustomerRegistrationForm(UserCreationForm):
         if employee_invite.email.lower() != registration_email.lower():
             raise forms.ValidationError(
                 "Invalid Code, Does not match email on file."
-            
             )
 
         return invite_code

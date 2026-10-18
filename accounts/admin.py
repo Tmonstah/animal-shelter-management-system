@@ -1,13 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import EmployeeAccessRequest, EmployeeInvite, User
+from .models import CustomerProfile, EmployeeProfile, EmployeeAccessRequest, EmployeeInvite, User
 from django.utils import timezone
 
 admin.site.register(User, UserAdmin) # this registers accounts.User model in the admin site & tells Django to use its built-in UserAdmin interface for it
 
-admin.site.register(EmployeeInvite) # Allow superusers to create and manage employee invitation codes.
+admin.site.register(EmployeeInvite) # Allow superusers to create and manage employee invitation codes
 
-@admin.register(EmployeeAccessRequest) # Allow superusers to review employee access requests.
+admin.site.register(CustomerProfile) # Allow superusers to view and manage customer profile information
+
+admin.site.register(EmployeeProfile) # Allow superusers to view and manage employee profile information
+
+@admin.register(EmployeeAccessRequest) # Allow superusers to review employee access requests
+
 class EmployeeAccessRequestAdmin(admin.ModelAdmin):
 
     list_display = ( # Show Employee info

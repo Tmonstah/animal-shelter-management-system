@@ -6,10 +6,61 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 #User Model
+#Built in library to handle user data. General use case for everyone
 
 class User(AbstractUser):
     pass
-#Built in library to handle user data. General use case for everyone
+
+#This class is to add a profile display for the customer tied to the back end metadata
+
+class CustomerProfile(models.Model):
+    # Customer Front to Back 1:1
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="customer_profile",
+    )
+
+    # Customer Meta data
+    phone_number = models.CharField(max_length=20, blank=True)
+    address_line_1 = models.CharField(max_length=150, blank=True)
+    address_line_2 = models.CharField(max_length=150, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20, blank=True)
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} Customer Profile"
+
+class EmployeeProfile(models.Model): # Front to Backend connection 1:1
+    
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="employee_profile",
+    )
+
+    # Employee MetaData
+    phone_number = models.CharField(max_length=20, blank=True)
+    employee_id = models.CharField(max_length=50, unique=True)
+    job_title = models.CharField(max_length=100, blank=True)
+    department = models.CharField(max_length=100, blank=True)
+    hire_date = models.DateField(null=True, blank=True)
+
+
+    # TimeStamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f"{self.user.username} Employee Profile"
+
 
 def generate_invite_code():
 
