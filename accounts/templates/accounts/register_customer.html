@@ -1,0 +1,21 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<!-- Registration page -->
+<h1>Create Account</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ registration_form.as_p }}
+
+    <button type="submit">Register</button>
+</form>
+
+<p>
+    Already have an account?
+    <a href="{% url 'login' %}">Login</a>
+</p>
+
+{% endblock %}

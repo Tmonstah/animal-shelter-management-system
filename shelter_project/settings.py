@@ -46,10 +46,10 @@ INSTALLED_APPS = [
     'shelter_project.apps.MongoAuthConfig',
     'shelter_project.apps.MongoContentTypesConfig',
     'django_mongodb_backend',
-
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -161,3 +161,5 @@ MIGRATION_MODULES = {
 }
 
 DEFAULT_AUTO_FIELD = "django_mongodb_backend.fields.ObjectIdAutoField"
+AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "/login/"
