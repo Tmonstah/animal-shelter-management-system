@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "animal",
+    "accounts"
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,10 @@ DATABASES = {
 
 MIGRATION_MODULES = {
     "animal": None,
+    "accounts": None,
 }
+AUTH_USER_MODEL = "accounts.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+STATIC_URL = "/static/"

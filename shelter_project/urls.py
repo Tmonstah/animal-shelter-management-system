@@ -25,7 +25,7 @@ from shelter_project import views as shelter_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('animals/', animal_views.animal_list, name='animal_list'),
-    path('home/', shelter_views.home, name='home')
+    path('home/', shelter_views.home, name='home'),
     path("", include("accounts.urls")),
 ]
 if settings.DEBUG:

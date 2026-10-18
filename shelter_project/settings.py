@@ -46,11 +46,10 @@ INSTALLED_APPS = [
     'shelter_project.apps.MongoAuthConfig',
     'shelter_project.apps.MongoContentTypesConfig',
     'django_mongodb_backend',
-
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    'accounts'
 ]
 
 MIDDLEWARE = [

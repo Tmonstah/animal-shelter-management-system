@@ -2,7 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import EmployeeInvite, User
 
-
+#TODO add vailidators for field types
+#   http uses strings to pass information, it will technically 
+#   allow a username with all numbers, though it may not be desireable
 class CustomerRegistrationForm(UserCreationForm):
     
     employee_invite_code = forms.CharField(
@@ -40,9 +42,8 @@ class CustomerRegistrationForm(UserCreationForm):
     # Optional invite code for customers but verification for employees
 
     def clean_employee_invite_code(self):
-        
         invite_code = self.cleaned_data.get("employee_invite_code")
-
+        
         if not invite_code:
             return invite_code
 
