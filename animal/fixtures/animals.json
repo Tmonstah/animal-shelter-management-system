@@ -1,0 +1,66 @@
+[
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Casey",
+            "gender": "Female",
+            "personality_desc": "crazy energy",
+            "coloration": "black, orange",
+            "age": 6, 
+            "breed": "Cat American Shorthair",
+            "hair_type": "Short",
+            "medical_desc": "Healthy",
+            "available": "True",
+            "image": "/animal_pictures/casey.jpg"
+
+        }
+    },
+        {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "ginny",
+            "gender": "Female",
+            "personality_desc": "Loves food",
+            "coloration": "brown, white",
+            "age": 1, 
+            "breed": "Guinea Pig",
+            "hair_type": "Short",
+            "medical_desc": "healthy",
+            "available": 1,
+            "image": "/animal_pictures/ginny.jpg"
+
+        }
+    },
+        {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Blake",
+            "gender": "Male",
+            "personality_desc": "Loves to cuddle",
+            "coloration": "Black",
+            "age": 2, 
+            "breed": "Dog Lab",
+            "hair_type": "Short",
+            "medical_desc": "Allergies: Air",
+            "available": 1,
+            "image": "/animal_pictures/blake.jpg"
+
+        }
+    },
+        {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Fluffer-Nutter",
+            "gender": "Male",
+            "personality_desc": "Loves to dart around",
+            "coloration": "Gray/white",
+            "age": 1, 
+            "breed": "Rabbit",
+            "hair_type": "Long",
+            "medical_desc": "Healthy",
+            "available": 1,
+            "image": "/animal_pictures/fluffer-nutter.jpg"
+
+        }
+    }
+]

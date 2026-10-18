@@ -70,3 +70,8 @@ Push your branch:
 git push -u origin feature/your-feature-name
 
 Then create a Pull Request on GitHub.
+
+
+-------------------------------------------
+To add animal data to your local container use this command to add animal fixture.
+    docker compose exec web python manage.py loaddata animals.json
