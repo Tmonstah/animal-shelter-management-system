@@ -1,0 +1,38 @@
+{% extends 'shelter_project/base.html' %}
+
+{% block content %}
+    <article class="animal-profile">
+        <p><a href="{% url 'animal_list' %}">Back to all animals</a></p>
+        <h2>{{ animal.name }}</h2>
+
+        {% if animal.image %}
+            <img src="{{ animal.image.url }}" alt="{{ animal.name }}" width="300">
+        {% endif %}
+
+        <dl>
+            <dt>Breed</dt>
+            <dd>{{ animal.breed }}</dd>
+
+            <dt>Age</dt>
+            <dd>{{ animal.age }} years old</dd>
+
+            <dt>Gender</dt>
+            <dd>{{ animal.get_gender_display }}</dd>
+
+            <dt>Coloration</dt>
+            <dd>{{ animal.coloration }}</dd>
+
+            <dt>Hair type</dt>
+            <dd>{{ animal.get_hair_type_display }}</dd>
+
+            <dt>Personality</dt>
+            <dd>{{ animal.personality_desc }}</dd>
+
+            <dt>Medical information</dt>
+            <dd>{{ animal.medical_desc }}</dd>
+
+            <dt>Adoption status</dt>
+            <dd>Available for adoption</dd>
+        </dl>
+    </article>
+{% endblock %}

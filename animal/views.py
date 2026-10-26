@@ -1,5 +1,5 @@
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from .forms import AnimalFilterForm
 from .models import Animal
@@ -28,4 +28,13 @@ def animal_list(request):
         request,
         "shelter_project/animal_listing.html",
         {"animals": available_animals, "filter_form": filter_form},
+    )
+
+
+def animal_detail(request, animal_id):
+    animal = get_object_or_404(Animal, pk=animal_id, available=True)
+    return render(
+        request,
+        "shelter_project/animal_detail.html",
+        {"animal": animal},
     )

@@ -25,6 +25,11 @@ from shelter_project import views as shelter_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('animals/', animal_views.animal_list, name='animal_list'),
+    path(
+        'animals/<str:animal_id>/',
+        animal_views.animal_detail,
+        name='animal_detail',
+    ),
     path('home/', shelter_views.home, name='home'),
     path("", include("accounts.urls")),
 ]
