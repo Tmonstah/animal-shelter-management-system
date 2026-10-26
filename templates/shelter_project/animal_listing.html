@@ -27,6 +27,7 @@
                 <p><strong>Breed:</strong> {{ animal.breed }}</p>
                 <p><strong>Age:</strong> {{ animal.age }} years old</p>
                 <p><strong>Personality:</strong> {{ animal.personality_desc }}</p>
+                <a href="{% url 'animal_detail' animal.id %}">View profile</a>
                 <hr>
             </div>
         {% empty %}

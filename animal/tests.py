@@ -52,6 +52,28 @@ class AnimalListViewTests(TestCase):
         response = self.client.get(reverse("animal_list"))
         self.assertTemplateUsed(response, "shelter_project/animal_listing.html")
 
+    def test_animal_profile_shows_details(self):
+        animal = Animal.objects.get(name="Buddy")
+
+        response = self.client.get(
+            reverse("animal_detail", args=[animal.id])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "shelter_project/animal_detail.html")
+        self.assertContains(response, "Friendly and playful")
+        self.assertContains(response, "Brown")
+        self.assertContains(response, "Healthy and vaccinated")
+
+    def test_unavailable_animal_profile_returns_404(self):
+        animal = Animal.objects.get(name="Shadow")
+
+        response = self.client.get(
+            reverse("animal_detail", args=[animal.id])
+        )
+
+        self.assertEqual(response.status_code, 404)
+
     def test_filters_animals_by_breed(self):
         response = self.client.get(reverse("animal_list"), {"breed": "Cat"})
 
