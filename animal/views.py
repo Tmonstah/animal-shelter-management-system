@@ -1,8 +1,12 @@
 # Create your views here.
-from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import AnimalFilterForm
+from .forms import AnimalCreateForm, AnimalFilterForm
 from .models import Animal
+
+MAX_AVAILABLE_ANIMALS = 50
 
 
 def animal_list(request):
@@ -28,6 +32,37 @@ def animal_list(request):
         request,
         "shelter_project/animal_listing.html",
         {"animals": available_animals, "filter_form": filter_form},
+    )
+
+
+@login_required
+def animal_create(request):
+    if not (request.user.is_staff or request.user.is_superuser):
+        return HttpResponseForbidden(
+            "Only employees and managers can add animals."
+        )
+
+    available_count = Animal.objects.filter(available=True).count()
+    if request.method == "POST":
+        form = AnimalCreateForm(request.POST, request.FILES)
+        if available_count >= MAX_AVAILABLE_ANIMALS:
+            form.add_error(
+                None,
+                "The shelter already has the maximum of 50 available animals.",
+            )
+        elif form.is_valid():
+            form.save()
+            return redirect("animal_list")
+    else:
+        form = AnimalCreateForm()
+
+    return render(
+        request,
+        "shelter_project/animal_create.html",
+        {
+            "form": form,
+            "at_capacity": available_count >= MAX_AVAILABLE_ANIMALS,
+        },
     )
 
 
