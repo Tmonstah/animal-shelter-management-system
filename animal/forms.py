@@ -5,6 +5,7 @@ from .models import Animal
 
 class AnimalFilterForm(forms.Form):
     name = forms.CharField(required=False, label="Search by name")
+    animal_type = forms.ChoiceField(required=False, label="Animal Type")
     breed = forms.ChoiceField(required=False, label="Breed")
     gender = forms.ChoiceField(required=False, label="Gender")
     min_age = forms.IntegerField(required=False, min_value=0, label="Minimum age")
@@ -12,6 +13,15 @@ class AnimalFilterForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        animal_types = (
+            Animal.objects.filter(available=True)
+            .order_by("animal_type")
+            .values_list("animal_type", flat=True)
+            .distinct()
+        )
+        self.fields["animal_type"].choices = [("", "All types")] + [
+            (animal_type, animal_type) for animal_type in animal_types
+        ]
         breeds = (
             Animal.objects.filter(available=True)
             .order_by("breed")

@@ -15,6 +15,8 @@ def animal_list(request):
             available_animals = available_animals.filter(
                 name__icontains=filters["name"]
             )
+        if filters["animal_type"]:
+            available_animals = available_animals.filter(animal_type=filters["animal_type"])
         if filters["breed"]:
             available_animals = available_animals.filter(breed=filters["breed"])
         if filters["gender"]:

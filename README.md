@@ -39,6 +39,7 @@ docker compose down
 
 
 Run Django Commands:
+docker compose exec web python manage.py makemigrations
 docker compose exec web python manage.py migrate
 
 Workflow to test
@@ -74,4 +75,9 @@ Then create a Pull Request on GitHub.
 
 -------------------------------------------
 To add animal data to your local container use this command to add animal fixture.
-    docker compose exec web python manage.py loaddata animals.json
+    docker compose exec web python manage.py loaddata XXXX.json
+To delete animal fixture data (DELETES ALL DATA IN DB!!!)
+    1) Verify Docker is up.
+    2) docker compose exec web python manage.py shell
+    3) from {model}.models import {model class}
+    4) {model class}.objects.all().delete()
