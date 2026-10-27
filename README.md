@@ -39,6 +39,7 @@ docker compose down
 
 
 Run Django Commands:
+docker compose exec web python manage.py makemigrations
 docker compose exec web python manage.py migrate
 
 Workflow to test
