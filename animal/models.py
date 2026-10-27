@@ -14,6 +14,7 @@ class Animal(models.Model):
     #id not needed because DJANGO creates a primary key ID automatically
     #TODO animal Type?
     name = models.CharField(max_length=50)
+    animal_type = models.CharField(max_length=50)
     gender = models.CharField(max_length=6, choices=ANIMAL_GENDER_CHOICES)
     personality_desc = models.CharField(max_length=300)
     coloration = models.CharField(max_length=50)
