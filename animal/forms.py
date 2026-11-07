@@ -38,7 +38,7 @@ class AnimalFilterForm(forms.Form):
 
 class AnimalCreateForm(forms.ModelForm):
     age = forms.IntegerField(min_value=0)
-
+    # refer to django documentation for Meta relationship of models and model forms
     class Meta:
         model = Animal
         fields = (

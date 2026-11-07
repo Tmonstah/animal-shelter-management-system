@@ -50,12 +50,14 @@ def animal_create(request):
                 None,
                 "The shelter already has the maximum of 50 available animals.",
             )
+        # Keep in mind ModelForm and form relationship. This validation will also
+        # run animal validations.
         elif form.is_valid():
             form.save()
             return redirect("animal_list")
     else:
         form = AnimalCreateForm()
-
+    # Fall through logic for rendering the default form
     return render(
         request,
         "shelter_project/animal_create.html",
