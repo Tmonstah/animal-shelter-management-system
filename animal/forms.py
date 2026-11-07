@@ -44,3 +44,21 @@ class AnimalFilterForm(forms.Form):
             self.add_error("max_age", "Maximum age must be at least the minimum age.")
 
         return cleaned_data
+
+
+class AnimalCreateForm(forms.ModelForm):
+    age = forms.IntegerField(min_value=0)
+    # refer to django documentation for Meta relationship of models and model forms
+    class Meta:
+        model = Animal
+        fields = (
+            "name",
+            "gender",
+            "personality_desc",
+            "coloration",
+            "age",
+            "breed",
+            "hair_type",
+            "medical_desc",
+            "image",
+        )

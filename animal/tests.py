@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 from animal.models import Animal
 
 class AnimalListViewTests(TestCase):
@@ -136,3 +137,117 @@ class AnimalListViewTests(TestCase):
         self.assertContains(response, "Maximum age must be at least the minimum age.")
         self.assertContains(response, "Buddy")
         self.assertContains(response, "Luna")
+
+
+class AnimalCreateViewTests(TestCase):
+    def setUp(self):
+        self.employee = get_user_model().objects.create_user(
+            username="employee",
+            password="test-password",
+            is_staff=True,
+        )
+        self.customer = get_user_model().objects.create_user(
+            username="customer",
+            password="test-password",
+        )
+        self.animal_data = {
+            "name": "New Friend",
+            "gender": "F",
+            "personality_desc": "Gentle and curious",
+            "coloration": "Gray",
+            "age": "4",
+            "breed": "Domestic Shorthair",
+            "hair_type": "SHORT",
+            "medical_desc": "Healthy",
+        }
+
+    def test_anonymous_users_are_redirected_to_login(self):
+        response = self.client.get(reverse("animal_create"))
+
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={reverse('animal_create')}",
+        )
+
+    def test_customers_cannot_access_add_animal_page(self):
+        self.client.force_login(self.customer)
+
+        response = self.client.get(reverse("animal_create"))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_employee_can_add_animal(self):
+        self.client.force_login(self.employee)
+
+        response = self.client.post(reverse("animal_create"), self.animal_data)
+
+        self.assertRedirects(response, reverse("animal_list"))
+        animal = Animal.objects.get(name="New Friend")
+        self.assertTrue(animal.available)
+
+    def test_superuser_can_add_animal(self):
+        manager = get_user_model().objects.create_superuser(
+            username="manager",
+            password="test-password",
+            email="manager@example.com",
+        )
+        self.client.force_login(manager)
+
+        response = self.client.post(reverse("animal_create"), self.animal_data)
+
+        self.assertRedirects(response, reverse("animal_list"))
+        self.assertTrue(Animal.objects.filter(name="New Friend").exists())
+
+    def test_animal_list_shows_add_link_only_to_employee(self):
+        self.client.force_login(self.employee)
+        employee_response = self.client.get(reverse("animal_list"))
+        self.assertContains(employee_response, reverse("animal_create"))
+
+        self.client.force_login(self.customer)
+        customer_response = self.client.get(reverse("animal_list"))
+        self.assertNotContains(customer_response, reverse("animal_create"))
+
+        self.client.logout()
+        anonymous_response = self.client.get(reverse("animal_list"))
+        self.assertNotContains(anonymous_response, reverse("animal_create"))
+
+    def test_cannot_add_animal_when_50_are_available(self):
+        self.client.force_login(self.employee)
+        for index in range(50):
+            Animal.objects.create(
+                name=f"Available {index}",
+                gender="M",
+                personality_desc="Friendly",
+                coloration="Brown",
+                age=1,
+                breed="Mixed",
+                hair_type="SHORT",
+                medical_desc="Healthy",
+                available=True,
+            )
+
+        response = self.client.post(reverse("animal_create"), self.animal_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "maximum of 50 available animals")
+        self.assertFalse(Animal.objects.filter(name="New Friend").exists())
+
+    def test_unavailable_animals_do_not_count_toward_limit(self):
+        self.client.force_login(self.employee)
+        for index in range(50):
+            Animal.objects.create(
+                name=f"Unavailable {index}",
+                gender="M",
+                personality_desc="Friendly",
+                coloration="Brown",
+                age=1,
+                breed="Mixed",
+                hair_type="SHORT",
+                medical_desc="Healthy",
+                available=False,
+            )
+
+        response = self.client.post(reverse("animal_create"), self.animal_data)
+
+        self.assertRedirects(response, reverse("animal_list"))
+        self.assertEqual(Animal.objects.filter(available=True).count(), 1)
