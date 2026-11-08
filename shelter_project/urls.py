@@ -26,6 +26,7 @@ from shelter_project import views as shelter_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('animals/', animal_views.animal_list, name='animal_list'),
+    path('animals/add/', animal_views.animal_create, name='animal_create'),
     path(
         'animals/<str:animal>/',
         animal_views.animal_detail,
