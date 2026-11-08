@@ -11,7 +11,7 @@ MAX_AVAILABLE_ANIMALS = 50
 
 def animal_list(request):
     filter_form = AnimalFilterForm(request.GET or None)
-    available_animals = Animal.objects.filter(available=True)
+    available_animals = Animal.objects.filter(available="available")
 
     if filter_form.is_valid():
         filters = filter_form.cleaned_data
@@ -75,5 +75,5 @@ def animal_detail(request, animal_id):
     return render(
         request,
         "shelter_project/animal_detail.html",
-        {"animal": animal},
+        {"animal": animal_id},
     )

@@ -2,33 +2,33 @@
     {
         "model": "animal.Animal",
         "fields": {
-            "name": "Casey",
+            "name": "Cassie",
             "animal_type": "Cat",
             "gender": "Female",
-            "personality_desc": "crazy energy",
+            "personality_desc": "Crazy energy",
             "coloration": "black, orange",
             "age": 6, 
             "breed": "American Shorthair",
             "hair_type": "Short",
             "medical_desc": "Healthy",
-            "available": "True",
-            "image": "/animal_pictures/casey.jpg"
+            "available": "available",
+            "image": "/animal_pictures/cassie.jpg"
 
         }
     },
         {
         "model": "animal.Animal",
         "fields": {
-            "name": "ginny",
+            "name": "Ginny",
             "animal_type": "Guinea Pig",
             "gender": "Female",
             "personality_desc": "Loves food",
-            "coloration": "brown, white",
+            "coloration": "Brown, white",
             "age": 1, 
             "breed": "Abyssinian",
             "hair_type": "Short",
             "medical_desc": "healthy",
-            "available": 1,
+            "available": "available",
             "image": "/animal_pictures/ginny.jpg"
 
         }
@@ -45,7 +45,7 @@
             "breed": "Labrador",
             "hair_type": "Short",
             "medical_desc": "Allergies: Air",
-            "available": 1,
+            "available": "available",
             "image": "/animal_pictures/blake.jpg"
 
         }
@@ -62,7 +62,7 @@
             "breed": "Lion Head",
             "hair_type": "Long",
             "medical_desc": "Healthy",
-            "available": 1,
+            "available": "available",
             "image": "/animal_pictures/fluffer-nutter.jpg"
 
         }

@@ -11,8 +11,15 @@ class Animal(models.Model):
     ANIMAL_GENDER_CHOICES = {MALE: "Male", FEMALE: "Female"}
     ANIMAL_HAIR_TYPE_CHOICES = {LONG: "Long", SHORT: "Short", MED: "Medium"}
 
+    STATUS_CHOICES = [
+        
+        ("available", "Available"),
+        ("pending", "Pending"),
+        ("unavailable", "Unavailable"),
+    
+    ]
+
     #id not needed because DJANGO creates a primary key ID automatically
-    #TODO animal Type?
     name = models.CharField(max_length=50)
     animal_type = models.CharField(max_length=50)
     gender = models.CharField(max_length=6, choices=ANIMAL_GENDER_CHOICES)
@@ -22,7 +29,11 @@ class Animal(models.Model):
     breed = models.CharField(max_length=50)
     hair_type = models.CharField(max_length=20, choices=ANIMAL_HAIR_TYPE_CHOICES)
     medical_desc = models.CharField(max_length=300)
-    available = models.BooleanField(default=True)
+    available = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default = "available",
+        )
     image = models.ImageField(
         upload_to='animal_pictures/',
         blank=True,

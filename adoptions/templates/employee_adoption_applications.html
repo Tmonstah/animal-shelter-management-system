@@ -1,0 +1,100 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>Adoption Applications</h1>
+
+{% for application in adoption_applications %}
+
+    <div>
+        <h3>
+            {{ application.first_name }}
+            {{ application.last_name }}
+            - {{ application.animal.name }}
+        </h3>
+
+        <p>
+            Status: {{ application.get_status_display }}
+        </p>
+
+        <p>
+            Email: {{ application.email }}
+        </p>
+
+        <p>
+            Phone: {{ application.phone_number }}
+        </p>
+
+        <p>
+            Address:
+            {{ application.address_line_1 }}
+            {% if application.address_line_2 %}
+                {{ application.address_line_2 }}
+            {% endif %}
+            {{ application.city }},
+            {{ application.state }}
+            {{ application.postal_code }}
+        </p>
+
+        <p>
+            Submitted: {{ application.submitted_at }}
+        </p>
+
+        {% if application.reason_for_adoption %}
+            <p>
+                Reason for adoption:
+                {{ application.reason_for_adoption }}
+            </p>
+        {% endif %}
+
+        {% if application.reviewed_by %}
+            <p>
+                Reviewed by:
+                {{ application.reviewed_by.username }}
+            </p>
+        {% endif %}
+
+        {% if application.reviewed_at %}
+            <p>
+                Reviewed:
+                {{ application.reviewed_at }}
+            </p>
+        {% endif %}
+
+        <!-- Only pending applications can be approved or denied. -->
+        {% if application.status == "pending" %}
+
+            <form
+                method="post"
+                action="{% url 'approve_adoption_application' application.id %}"
+            >
+                {% csrf_token %}
+                <button type="submit">Approve</button>
+            </form>
+
+            <form
+                method="post"
+                action="{% url 'deny_adoption_application' application.id %}"
+            >
+                {% csrf_token %}
+                <button type="submit">Deny</button>
+            </form>
+
+        {% endif %}
+
+        <hr>
+    </div>
+
+{% empty %}
+
+    <p>No adoption applications have been submitted yet.</p>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'employee_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
+
+{% endblock %}

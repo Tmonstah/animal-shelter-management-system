@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 #    'django.contrib.contenttypes',
 # Create MongoDB-compatible app configs
 # This matches MongoDB’s official guidance for Django’s contrib apps.
-    'animal.apps.AnimalConfig',
     'shelter_project.apps.MongoAdminConfig',
     'shelter_project.apps.MongoAuthConfig',
     'shelter_project.apps.MongoContentTypesConfig',
@@ -50,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'adoptions'
+    'adoptions',
+    'animal'
 ]
 
 MIDDLEWARE = [
