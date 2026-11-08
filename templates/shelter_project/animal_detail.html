@@ -35,7 +35,31 @@
             <dd>{{ animal.medical_desc }}</dd>
 
             <dt>Adoption status</dt>
-            <dd>Available for adoption</dd>
+            <dd>{{ animal.available }}</dd>
         </dl>
+        {% if animal.available == "available"%}
+            {% if user.is_authenticated and not user.is_staff %}
+                <p>
+                    <a href="{% url 'adoption_application_create' animal.pk %}">
+                        Apply for Adoption
+                    </a>
+                </p>
+
+            {% elif not user.is_authenticated %}
+
+                <p>
+                    <a href="{% url 'login' %}">
+                        Login to apply for adoption
+                    </a>
+                </p>
+
+                <p>
+                    <a href="{% url 'login' %}">
+                        Login to schedule a meet and greet
+                    </a>
+                </p>
+            {% endif %}
+
+        {% endif %}
     </article>
 {% endblock %}

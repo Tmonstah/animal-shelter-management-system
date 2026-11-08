@@ -1,0 +1,26 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<!-- Adoption application page -->
+<h1>Adoption Application Submitted</h1>
+
+<p>
+    You have successfully applied to adopt <strong>{{ animal.name }}</strong>.
+</p>
+
+<p>
+    You can review your applications here:
+    <a href="{% url 'customer_dashboard' %}">
+        Review your applications
+    </a>
+</p>
+
+<p>
+    <a href="{% url 'animal_list' %}">
+        Back to browsing animals
+    </a>
+</p>
+
+
+{% endblock %}

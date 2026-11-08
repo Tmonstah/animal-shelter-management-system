@@ -7,7 +7,7 @@ from .models import Animal
 
 def animal_list(request):
     filter_form = AnimalFilterForm(request.GET or None)
-    available_animals = Animal.objects.filter(available=True)
+    available_animals = Animal.objects.filter(available="available")
 
     if filter_form.is_valid():
         filters = filter_form.cleaned_data
@@ -33,10 +33,10 @@ def animal_list(request):
     )
 
 
-def animal_detail(request, animal_id):
-    animal = get_object_or_404(Animal, pk=animal_id, available=True)
+def animal_detail(request, animal):
+    animal_id = get_object_or_404(Animal, pk=animal, available="available")
     return render(
         request,
         "shelter_project/animal_detail.html",
-        {"animal": animal},
+        {"animal": animal_id},
     )
