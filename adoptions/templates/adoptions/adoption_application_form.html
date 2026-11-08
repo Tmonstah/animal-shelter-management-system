@@ -1,0 +1,25 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>Adoption Application</h1>
+
+<p>
+    You are applying to adopt <strong>{{ animal.name }}</strong>.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ application_form.as_p }}
+
+    <button type="submit">Submit Application</button>
+</form>
+
+<p>
+    <a href="{% url 'animal_detail' animal.id %}">
+        Back to {{ animal.name }}
+    </a>
+</p>
+
+{% endblock %}

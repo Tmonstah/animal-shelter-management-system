@@ -1,0 +1,27 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>Add Medical Record</h1>
+
+<p>
+    Animal: <strong>{{ animal.name }}</strong>
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ medical_record_form.as_p }}
+
+    <button type="submit">
+        Save Medical Record
+    </button>
+</form>
+
+<p>
+    <a href="{% url 'animal_medical_records' animal.id %}">
+        Back to Medical Records
+    </a>
+</p>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>My Appointments</h1>
+
+{% for appointment in appointments %}
+
+    <div>
+        <h3>{{ appointment.animal.name }}</h3>
+
+        <p>
+            Date: {{ appointment.appointment_date }}
+        </p>
+
+        <p>
+            Time: {{ appointment.appointment_time }}
+        </p>
+
+        <p>
+            Status: {{ appointment.get_status_display }}
+        </p>
+
+        <hr>
+    </div>
+
+{% empty %}
+
+    <p>You do not have any appointments scheduled.</p>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'customer_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
+
+{% endblock %}

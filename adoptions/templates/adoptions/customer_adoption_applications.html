@@ -1,0 +1,41 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>My Adoption Applications</h1>
+
+{% for application in adoption_applications %}
+
+    <div>
+        <h3>{{ application.animal_id.name }}</h3>
+
+        <p>
+            Status: {{ application.get_status_display }}
+        </p>
+
+        <p>
+            Submitted: {{ application.submitted_at }}
+        </p>
+
+        {% if application.reason_for_adoption %}
+            <p>
+                Reason: {{ application.reason_for_adoption }}
+            </p>
+        {% endif %}
+
+        <hr>
+    </div>
+
+{% empty %}
+
+    <p>You have not submitted any adoption applications yet.</p>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'customer_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
+
+{% endblock %}
