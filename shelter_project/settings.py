@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'accounts',
     'adoptions',
     'appointments',
-    'medical'
+    'medical',
     'animal'
 ]
 

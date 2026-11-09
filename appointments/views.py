@@ -23,7 +23,7 @@ def appointment_create(request, animal_id):
     animal = get_object_or_404(
         Animal,
         pk=animal_id,
-        available=True,
+        available='available',
     )
 
     if request.method == "POST":

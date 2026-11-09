@@ -150,7 +150,7 @@ def approve_adoption_application(request, application_id):
 
         # Mark the animal as unavailable once an application is approved.
         animal = adoption_application.animal_id
-        animal.available = False
+        animal.available = 'unavailable'
         animal.save()
 
     return redirect("employee_adoption_applications")

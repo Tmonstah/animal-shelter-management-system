@@ -14,7 +14,7 @@ class AnimalFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         animal_types = (
-            Animal.objects.filter(available=True)
+            Animal.objects.filter(available="available")
             .order_by("animal_type")
             .values_list("animal_type", flat=True)
             .distinct()
@@ -23,7 +23,7 @@ class AnimalFilterForm(forms.Form):
             (animal_type, animal_type) for animal_type in animal_types
         ]
         breeds = (
-            Animal.objects.filter(available=True)
+            Animal.objects.filter(available="available")
             .order_by("breed")
             .values_list("breed", flat=True)
             .distinct()

@@ -28,7 +28,7 @@ urlpatterns = [
     path('animals/', animal_views.animal_list, name='animal_list'),
     path('animals/add/', animal_views.animal_create, name='animal_create'),
     path(
-        'animals/<str:animal>/',
+        'animals/<str:animal_id>/',
         animal_views.animal_detail,
         name='animal_detail',
     ),

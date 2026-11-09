@@ -44,7 +44,7 @@ def animal_create(request):
             "Only employees and managers can add animals."
         )
 
-    available_count = Animal.objects.filter(available=True).count()
+    available_count = Animal.objects.filter(available="available").count()
     if request.method == "POST":
         form = AnimalCreateForm(request.POST, request.FILES)
         if available_count >= MAX_AVAILABLE_ANIMALS:
@@ -71,9 +71,9 @@ def animal_create(request):
 
 
 def animal_detail(request, animal_id):
-    animal = get_object_or_404(Animal, pk=animal_id, available=True)
+    animal = get_object_or_404(Animal, pk=animal_id, available="available")
     return render(
         request,
         "shelter_project/animal_detail.html",
-        {"animal": animal_id},
+        {"animal": animal},
     )

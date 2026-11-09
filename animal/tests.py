@@ -14,7 +14,7 @@ class AnimalListViewTests(TestCase):
             breed="Mixed",
             hair_type="SHORT",
             medical_desc="Healthy and vaccinated",
-            available=True,
+            available='available',
         )
         Animal.objects.create(
             name="Luna",
@@ -25,7 +25,7 @@ class AnimalListViewTests(TestCase):
             breed="Cat",
             hair_type="LONG",
             medical_desc="Needs checkup",
-            available=True,
+            available='available',
         )
         Animal.objects.create(
             name="Shadow",
@@ -36,7 +36,7 @@ class AnimalListViewTests(TestCase):
             breed="Cat",
             hair_type="SHORT",
             medical_desc="Recovering",
-            available=False,
+            available='unavailable',
         )
 
     def test_animal_list_page_loads(self):
@@ -223,7 +223,7 @@ class AnimalCreateViewTests(TestCase):
                 breed="Mixed",
                 hair_type="SHORT",
                 medical_desc="Healthy",
-                available=True,
+                available='available',
             )
 
         response = self.client.post(reverse("animal_create"), self.animal_data)
@@ -244,10 +244,10 @@ class AnimalCreateViewTests(TestCase):
                 breed="Mixed",
                 hair_type="SHORT",
                 medical_desc="Healthy",
-                available=False,
+                available='unavailable',
             )
 
         response = self.client.post(reverse("animal_create"), self.animal_data)
 
         self.assertRedirects(response, reverse("animal_list"))
-        self.assertEqual(Animal.objects.filter(available=True).count(), 1)
+        self.assertEqual(Animal.objects.filter(available='available').count(), 1)
