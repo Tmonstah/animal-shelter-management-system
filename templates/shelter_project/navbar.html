@@ -6,9 +6,9 @@
             {% if user.is_authenticated %}
                 {% if user.is_staff or user.is_superuser %}
                     <li><a href="{% url 'animal_create' %}">Add animal</a></li>
-                    <li><a href="{% url 'employee_dashboard' %}">{{ user.get_full_name|default:user.username }}</a></li>
+                    <li><a href="{% url 'employee_dashboard' %}">My Account</a></li>
                 {% else %}
-                    <li><a href="{% url 'customer_dashboard' %}">{{ user.get_full_name|default:user.username }}</a></li>
+                    <li><a href="{% url 'customer_dashboard' %}">My Account</a></li>
                 {% endif %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else%}
