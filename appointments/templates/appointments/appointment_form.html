@@ -1,0 +1,25 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>Schedule Appointment</h1>
+
+<p>
+    Schedule a meet and greet with <strong>{{ animal.name }}</strong>.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ appointment_form.as_p }}
+
+    <button type="submit">Schedule Appointment</button>
+</form>
+
+<p>
+    <a href="{% url 'animal_detail' animal.id %}">
+        Back to {{ animal.name }}
+    </a>
+</p>
+
+{% endblock %}

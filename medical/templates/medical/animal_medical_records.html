@@ -1,0 +1,49 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>{{ animal.name }} Medical Records</h1>
+
+<p>
+    <a href="{% url 'medical_record_create' animal.id %}">
+        Add Medical Record
+    </a>
+</p>
+
+{% for record in medical_records %}
+
+    <div>
+        <h3>
+            {{ record.get_record_type_display }}
+        </h3>
+
+        <p>
+            Date: {{ record.record_date }}
+        </p>
+
+        <p>
+            {{ record.description }}
+        </p>
+
+        {% if record.created_by %}
+            <p>
+                Added by: {{ record.created_by.username }}
+            </p>
+        {% endif %}
+
+        <hr>
+    </div>
+
+{% empty %}
+
+    <p>No medical records have been added yet.</p>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'animal_detail' animal.id %}">
+        Back to Animal
+    </a>
+</p>
+
+{% endblock %}

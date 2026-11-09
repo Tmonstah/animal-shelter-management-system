@@ -1,0 +1,86 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>Appointment Management</h1>
+
+{% for appointment in appointments %}
+
+    <div>
+        <h3>
+            {{ appointment.customer_profile.user.username }}
+            - {{ appointment.animal.name }}
+        </h3>
+
+        <p>
+            Date: {{ appointment.appointment_date }}
+        </p>
+
+        <p>
+            Time: {{ appointment.appointment_time }}
+        </p>
+
+        <p>
+            Status: {{ appointment.get_status_display }}
+        </p>
+
+        {% if appointment.reviewed_by %}
+            <p>
+                Reviewed by: {{ appointment.reviewed_by.username }}
+            </p>
+        {% endif %}
+
+        {% if appointment.status == "pending" %}
+
+            <form
+                method="post"
+                action="{% url 'approve_appointment' appointment.id %}"
+            >
+                {% csrf_token %}
+                <button type="submit">Approve</button>
+            </form>
+
+            <form
+                method="post"
+                action="{% url 'cancel_appointment' appointment.id %}"
+            >
+                {% csrf_token %}
+                <button type="submit">Cancel</button>
+            </form>
+
+        {% elif appointment.status == "approved" %}
+
+            <form
+                method="post"
+                action="{% url 'complete_appointment' appointment.id %}"
+            >
+                {% csrf_token %}
+                <button type="submit">Mark Completed</button>
+            </form>
+
+            <form
+                method="post"
+                action="{% url 'cancel_appointment' appointment.id %}"
+            >
+                {% csrf_token %}
+                <button type="submit">Cancel</button>
+            </form>
+
+        {% endif %}
+
+        <hr>
+    </div>
+
+{% empty %}
+
+    <p>No appointments have been scheduled.</p>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'employee_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
+
+{% endblock %}

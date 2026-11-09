@@ -35,6 +35,9 @@ urlpatterns = [
     path('home/', shelter_views.home, name='home'),
     path("", include("accounts.urls")),
     path("", include("adoptions.urls")),
+    path("", include("appointments.urls")),
+    path("", include("medical.urls")),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
