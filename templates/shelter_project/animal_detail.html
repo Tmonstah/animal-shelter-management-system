@@ -2,21 +2,11 @@
 
 {% block content %}
     <article class="animal-profile">
-
-        <p>
-            <a href="{% url 'animal_list' %}">
-                Back to all animals
-            </a>
-        </p>
-
+        <p><a href="{% url 'animal_list' %}">Back to all animals</a></p>
         <h2>{{ animal.name }}</h2>
 
         {% if animal.image %}
-            <img
-                src="{{ animal.image.url }}"
-                alt="{{ animal.name }}"
-                width="300"
-            >
+            <img src="{{ animal.image.url }}" alt="{{ animal.name }}" width="300">
         {% endif %}
 
         <dl>
@@ -45,39 +35,38 @@
             <dd>{{ animal.medical_desc }}</dd>
 
             <dt>Adoption status</dt>
-            <dd>Available for adoption</dd>
+            <dd>{{ animal.available }}</dd>
         </dl>
+        {% if animal.available == "available"%}
+            {% if user.is_authenticated and not user.is_staff %}
+                <p>
+                    <a href="{% url 'adoption_application_create' animal.pk %}">
+                        Apply for Adoption
+                    </a>
+                </p>
+		
+		 <p>
+    		     <a href="{% url 'appointment_create' animal.pk %}">
+        	 	Schedule Meet and Greet
+    		     </a>
+		 </p>
 
 
-        {% if user.is_authenticated and not user.is_staff %}
+            {% elif not user.is_authenticated %}
 
-            <p>
-                <a href="{% url 'adoption_application_create' animal.id %}">
-                    Apply for Adoption
-                </a>
-            </p>
+                <p>
+                    <a href="{% url 'login' %}">
+                        Login to apply for adoption
+                    </a>
+                </p>
 
-            <p>
-                <a href="{% url 'appointment_create' animal.id %}">
-                    Schedule Meet and Greet
-                </a>
-            </p>
-
-        {% elif not user.is_authenticated %}
-
-            <p>
-                <a href="{% url 'login' %}">
-                    Login to apply for adoption
-                </a>
-            </p>
-
-            <p>
-                <a href="{% url 'login' %}">
-                    Login to schedule a meet and greet
-                </a>
-            </p>
+                <p>
+                    <a href="{% url 'login' %}">
+                        Login to schedule a meet and greet
+                    </a>
+                </p>
+            {% endif %}
 
         {% endif %}
-
     </article>
 {% endblock %}

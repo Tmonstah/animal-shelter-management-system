@@ -7,7 +7,7 @@
 {% for application in adoption_applications %}
 
     <div>
-        <h3>{{ application.animal_id.name }}</h3>
+        <h3>{{ application.animal.name }}</h3>
 
         <p>
             Status: {{ application.get_status_display }}

@@ -1,0 +1,17 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<!-- Customer only Error page -->
+<h1>Adoption Application Error</h1>
+
+<p>
+    Only customer accounts can be used for adoption applications.
+</p>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+{% endblock %}

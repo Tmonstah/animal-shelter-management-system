@@ -5,8 +5,8 @@ from . import views
 
 urlpatterns = [
     path(
-        "animals/<str:animal_id>/apply/",
-        views.adoption_application_create,
+        "animals/<str:pk>/apply/",
+        views.adoption_form_view,
         name="adoption_application_create",
     ),
 

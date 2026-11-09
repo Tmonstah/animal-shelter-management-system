@@ -1,80 +1,88 @@
+from django.contrib.auth import authenticate, login
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth import logout
+from .forms import AdoptionForm
 from .models import AdoptionApplication
 from accounts.models import CustomerProfile
 from animal.models import Animal
 from django.utils import timezone
-from .forms import AdoptionApplicationForm
 
-
-@login_required
-def adoption_application_create(request, animal_id):
-    # Employees should not submit customer adoption applications.
-    if request.user.is_staff:
-        return HttpResponseForbidden(
-            "Employees cannot submit adoption applications."
-        )
-
-    customer_profile, created = CustomerProfile.objects.get_or_create(
+# We only want people who have accounts to fill out applications
+# easier for tracking them.
+@login_required 
+def adoption_form_view(request, pk):
+    # Verify that customer does not have an application for the current animal
+    customer_profile = CustomerProfile.objects.get(
         user=request.user
     )
-
-    animal = get_object_or_404(
+    animal_id = get_object_or_404(
         Animal,
-        pk=animal_id,
-        available=True,
+        pk=pk,
+        available="available",
     )
-
     existing_application = AdoptionApplication.objects.filter(
     	customer_profile=customer_profile,
-    	animal_id=animal,
+    	animal=animal_id.pk,
     	status="pending",
     ).exists()
 
     if existing_application:
-    	return HttpResponseForbidden(
+        return HttpResponseForbidden(
             "You already have a pending application for this animal."
-    	)
+        )
 
+    # If user is submitting the form
     if request.method == "POST":
-        application_form = AdoptionApplicationForm(request.POST)
+        adoption_form = AdoptionForm(request.POST)
 
-        if application_form.is_valid():
-            adoption_application = application_form.save(commit=False)
+        #Check that the form is valid, and then save the application
+        if adoption_form.is_valid():
+            application = adoption_form.save(commit=False)
+            # Add in the user info that is not seen on form
+            application.customer_profile = request.user.customer_profile
+            application.animal = animal_id
+            application.save()
+            return render(
+                request,
+                "adoption_application_success.html",
+                {"adoption_application_form": application, "animal": animal_id,},
+            )
 
-            # Connect the application to the logged-in customer and selected animal.
-            adoption_application.customer_profile = customer_profile
-            adoption_application.animal_id = animal
-
-            adoption_application.save()
-
-            return redirect("customer_dashboard")
-
-    else:
-        application_form = AdoptionApplicationForm(
-            initial={
+    else: 
+        # Check if user is logged in and not a staff account, if so fill in all info
+        #   based on the account info.
+        if request.user.is_authenticated and not request.user.is_staff:
+            cust_profile = request.user.customer_profile
+            adoption_form = AdoptionForm(initial={
                 "first_name": request.user.first_name,
                 "last_name": request.user.last_name,
                 "email": request.user.email,
-                "phone_num": customer_profile.phone_number,
-                "address_line_1": customer_profile.address_line_1,
-                "address_line_2": customer_profile.address_line_2,
-                "city": customer_profile.city,
-                "state": customer_profile.state,
-                "postal_code": customer_profile.postal_code,
-            }
-        )
+                "phone_number": cust_profile.phone_number,
+                "address_line_1": cust_profile.address_line_1,
+                "address_line_2": cust_profile.address_line_2,
+                "city": cust_profile.city,
+                "state": cust_profile.state,
+                "postal_code": cust_profile.postal_code,
+                "animal": pk,
+            })
+
+        # We only want customer accounts to fill out applications, no staff.
+        else: 
+            return render(
+                request,
+                "customer_account_only_error.html",
+                status=403
+            )
 
     return render(
-        request,
-        "adoptions/adoption_application_form.html",
-        {
-            "application_form": application_form,
-            "animal": animal,
-        },
+            request,
+            "adoption_application.html",
+            {"adoption_application_form": adoption_form, "animal": animal_id,},
     )
 
+# This is the view for customers to see all their applications
 @login_required
 def customer_adoption_applications(request):
     if request.user.is_staff:
@@ -89,7 +97,7 @@ def customer_adoption_applications(request):
 
     adoption_applications = (
         customer_profile.adoption_applications
-        .select_related("animal_id")
+        .select_related("animal")
         .order_by("-submitted_at")
     )
 
@@ -101,6 +109,7 @@ def customer_adoption_applications(request):
         },
     )
 
+# This view is for the employee to see all the applications in the system
 @login_required
 def employee_adoption_applications(request):
     if not request.user.is_staff:
@@ -120,6 +129,7 @@ def employee_adoption_applications(request):
         },
     )
 
+# Allow the manager to approve animal applications            
 @login_required
 def approve_adoption_application(request, application_id):
     if not request.user.is_staff:
@@ -145,7 +155,7 @@ def approve_adoption_application(request, application_id):
 
     return redirect("employee_adoption_applications")
 
-
+# Allow a manager to deny an application            
 @login_required
 def deny_adoption_application(request, application_id):
     if not request.user.is_staff:

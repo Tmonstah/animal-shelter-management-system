@@ -15,49 +15,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from shelter_project import views as shelter_views
 from animal import views as animal_views
-from accounts import views as account_views
+from shelter_project import views as shelter_views
 
 
 urlpatterns = [
-    # Override the default Django admin logout.
+    path('admin/', admin.site.urls),
+    path('animals/', animal_views.animal_list, name='animal_list'),
+    path('animals/add/', animal_views.animal_create, name='animal_create'),
     path(
-        "admin/logout/",
-        account_views.logout_view,
-        name="admin_logout_redirect",
-    ),
-
-    # Django administration page.
-    path("admin/", admin.site.urls),
-
-    # Animal pages.
-    path("animals/", animal_views.animal_list, name="animal_list"),
-    path("animals/add/", animal_views.animal_create, name="animal_create"),
-    path(
-        "animals/<str:animal_id>/",
+        'animals/<str:animal>/',
         animal_views.animal_detail,
-        name="animal_detail",
+        name='animal_detail',
     ),
-
-    # Main project pages.
-    path("home/", shelter_views.home, name="home"),
-
-    # Account and adoption routes.
+    path('home/', shelter_views.home, name='home'),
     path("", include("accounts.urls")),
     path("", include("adoptions.urls")),
     path("", include("appointments.urls")),
     path("", include("medical.urls")),
+
 ]
-
-
-# Allows uploaded animal images to display during development.
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT,
-    )
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
