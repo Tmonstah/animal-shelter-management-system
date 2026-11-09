@@ -8,7 +8,11 @@
     <title>Animals Available for Adoption</title>
 </head>
 <body>
-    <h2>Meet Our Available Pets</h2>
+    {% if staff_view %}
+        <h2>Animal Records</h2>
+    {% else %}
+        <h2>Meet Our Available Pets</h2>
+    {% endif %}
 
     {% if user.is_authenticated %}
         {% if user.is_staff or user.is_superuser %}
@@ -33,6 +37,9 @@
                 <p><strong>Breed:</strong> {{ animal.breed }}</p>
                 <p><strong>Age:</strong> {{ animal.age }} years old</p>
                 <p><strong>Personality:</strong> {{ animal.personality_desc }}</p>
+                {% if staff_view %}
+                    <p><strong>Status:</strong> {{ animal.get_available_display }}</p>
+                {% endif %}
                 <a href="{% url 'animal_detail' animal.id %}">View profile</a>
                 <hr>
             </div>

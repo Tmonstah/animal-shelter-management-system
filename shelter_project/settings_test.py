@@ -15,7 +15,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "animal",
     "accounts",
-    "adoptions"
+    "adoptions",
+    "appointments",
+    "medical",
 ]
 
 MIDDLEWARE = [
@@ -55,8 +57,12 @@ DATABASES = {
 MIGRATION_MODULES = {
     "animal": None,
     "accounts": None,
+    "adoptions": None,
+    "appointments": None,
+    "medical": None,
 }
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "/login/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 

@@ -37,6 +37,11 @@
             <dt>Adoption status</dt>
             <dd>{{ animal.available }}</dd>
         </dl>
+        {% if user.is_authenticated %}
+            {% if user.is_superuser or user.is_staff %}
+                <p><a href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
+            {% endif %}
+        {% endif %}
         {% if animal.available == "available"%}
             {% if user.is_authenticated and not user.is_staff %}
                 <p>
