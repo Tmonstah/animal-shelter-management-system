@@ -51,14 +51,12 @@
                             Apply for Adoption
                         </a>
                     </p>
+                    <p>
+                        <a href="{% url 'appointment_create' animal.pk %}">
+                            Schedule Meet and Greet
+                        </a>
+                    </p>
                 {% endif %}
-		
-		 <p>
-    		     <a href="{% url 'appointment_create' animal.pk %}">
-        	 	Schedule Meet and Greet
-    		     </a>
-		 </p>
-
 
             {% elif not user.is_authenticated %}
 
