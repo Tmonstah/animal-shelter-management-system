@@ -1,15 +1,14 @@
 {% extends 'shelter_project/base.html' %}
 
 {% block content %}
-    <article class="animal-profile">
-        <p><a href="{% url 'animal_list' %}">Back to all animals</a></p>
-        <h2>{{ animal.name }}</h2>
-
+    <p><a href="{% url 'animal_list' %}">Back to all animals</a></p>
+    <article class="animal-profile">     
         {% if animal.image %}
-            <img src="{{ animal.image.url }}" alt="{{ animal.name }}" width="300">
+            <img class="animal-image-detail" src="{{ animal.image.url }}" alt="{{ animal.name }}">
         {% endif %}
 
         <dl>
+            <h2>{{ animal.name }}</h2>
             <dt>Animal Type</dt>
             <dd>{{ animal.animal_type }}</dd>
             
@@ -28,27 +27,37 @@
             <dt>Hair type</dt>
             <dd>{{ animal.get_hair_type_display }}</dd>
 
-            <dt>Personality</dt>
-            <dd>{{ animal.personality_desc }}</dd>
-
             <dt>Medical information</dt>
             <dd>{{ animal.medical_desc }}</dd>
 
             <dt>Adoption status</dt>
             <dd>{{ animal.available }}</dd>
+
+            <dt>Personality</dt>
+            <dd>{{ animal.personality_desc }}</dd>
         </dl>
+    </article>
+
         {% if user.is_authenticated %}
             {% if user.is_superuser or user.is_staff %}
                 <p><a href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
             {% endif %}
         {% endif %}
         {% if animal.available == "available"%}
-            {% if user.is_authenticated and not user.is_staff %}
-                <p>
-                    <a href="{% url 'adoption_application_create' animal.pk %}">
-                        Apply for Adoption
-                    </a>
-                </p>
+            {% if user.is_authenticated %} 
+                {% if not user.is_staff and not user.is_super_user%}
+                    <p>
+                        <a href="{% url 'adoption_application_create' animal.pk %}">
+                            Apply for Adoption
+                        </a>
+                    </p>
+                {% else %}
+                    <p>
+                        <a href="{% url 'animal_edit' animal.pk %}">
+                            Edit animal profile
+                        </a>
+                    </p>
+                {% endif %}
 		
 		 <p>
     		     <a href="{% url 'appointment_create' animal.pk %}">
@@ -73,5 +82,4 @@
             {% endif %}
 
         {% endif %}
-    </article>
 {% endblock %}

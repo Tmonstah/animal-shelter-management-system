@@ -31,8 +31,7 @@
             <div class="animal-card">
                 <h3>{{ animal.name }}</h3>
                 {% if animal.image %}
-                    <img src="{{ animal.image.url }}"
-                        width="150">
+                    <img class="animal-image" src="{{ animal.image.url }}">
                 {% endif %}
                 <p><strong>Breed:</strong> {{ animal.breed }}</p>
                 <p><strong>Age:</strong> {{ animal.age }} years old</p>
@@ -41,7 +40,6 @@
                     <p><strong>Status:</strong> {{ animal.get_available_display }}</p>
                 {% endif %}
                 <a href="{% url 'animal_detail' animal.id %}">View profile</a>
-                <hr>
             </div>
         {% empty %}
             <p>No animals are currently available for adoption. Check back soon!</p>
