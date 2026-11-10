@@ -1,18 +1,36 @@
+:root {
+    --head_foot-background: #003049;
+    --background: #f3f1e0;
+    --text1: #003049;
+    --text2: #f3f1e0;
+    --accent: #5a7b96;
+    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 /*Setting up all h1 types */
 .shelter{
     text-align: left;
-    background-color: rgb(16, 26, 82);
-    display: flex;
-    flex-direction: column;
+    background-color: var(--head_foot-background);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
     padding: 0;
-    color: rgb(255, 255, 255);
+    color: var(--text2);
     margin: 0;
-    font-family: Arial;
+    font-family: var(--font);
+    align-items: center;
+}
+.shelter > div:last-child {
+    grid-column: 1 / -1;
+}
+.logo{
+    width: 80px;
+    height: 80px;
 }
 
 /* navigation bar style */
 .nav_bar ul{
-    background-color: rgb(16, 26, 82);
+    background-color: var(--head_foot-background);
     list-style-type: none;
     margin-top: 0;
     margin-bottom: 5px;
@@ -25,19 +43,61 @@
     float: left;
 }
 .nav_bar ul li a{
-    color:  rgb(255, 255, 255);
+    color:  var(--text2);
     text-align: center;
     padding: 10px 10px;
     text-decoration: None;
 }
+
+/* Drop Down button for nav bar */
+.nav_bar li a, .dropbtn{
+    display: inline-block;
+    color: var(--accent);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.nav_bar li a:hover, .dropdown:hover .dropbtn {
+  background-color: var(--accent);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.nav_bar li.dropdown {
+  display: inline-block;
+}
+
+.nav_bar .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.nav_bar .dropdown-content a { 
+    color: var(--text1);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
 .nav_bar ul li a:hover {
-    background-color: rgb(69, 100, 240);
+    background-color: var(--accent);
+}
+.nav_bar ul li a.active {
+    background-color: var(--accent);
 }
 
 /* Main body style for every page */
 .main {
-    font-family: Arial;
-    color: rgb(16, 26, 82);
+    font-family: var(--font);
+    color: var(--text1);
     flex: 1;
     margin-left: 20px;
 }
@@ -45,7 +105,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background-color: rgb(247, 248, 242);
+    background-color: var(--background);
     display: flex;
     flex-direction: column;
 }
@@ -65,7 +125,7 @@ dt {
     clear: left;
     text-align: left;
     font-weight: bold;
-    color: rgb(0, 0, 0);
+    color: var(--text1);
 }
 dt::after {
     content: ":";
@@ -75,7 +135,7 @@ dd {
     text-align: left;
     margin-left: 20px;
     padding: 0 0 0.5em 0;
-    color: rgb(0, 0, 0);
+    color: var(--text1);
 }
 
 footer{
@@ -83,12 +143,111 @@ footer{
     bottom: 0;
     text-align: left;
     position: static;
-    background-color: rgb(16, 26, 82);
+    background-color: var(--head_foot-background);
     display: flex;
     flex-direction: column;
     padding: none;
-    color: rgb(255, 255, 255);
+    color: var(--text2);
     margin: 0;
-    font-family: Arial;
+    font-family: var(--font);
     width: 100%;
+}
+
+/* Animal listing setup */
+.animal-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: var(--background);
+    padding: 20px;
+    gap: 10px;
+    width: 80%;
+}
+.animal-grid p{
+    text-align: left;
+}
+a
+.animal-grid h3{
+    text-align: Center;
+    margin-top: 0;
+}
+
+.animal-grid div {
+    border-radius: 20px;
+    background-color: var(--background);
+    border: 1px solid var(--accent);
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+}
+.animal-image{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+
+/* animal_details setup */
+.animal-about {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: var(--background);
+    padding: 20px;
+    gap: 10px;
+    width: 80%;
+}
+.animal-profile {
+    display: grid;
+    align-items: start;
+    grid-template-rows: auto auto;
+    background-color: var(--background);
+    padding-top: 20px;
+    gap: 10px;
+    width: 80%;
+}
+.animal-profile p{
+    text-align: left;
+}
+a
+.animal-profile h2{
+    text-align: Center;
+    margin-top: 0;
+}
+
+.animal-profile dl {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-radius: 20px;
+    background-color: var(--background);
+    border: 1px solid var(--accent);
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    float: left;
+    margin-top: 0;
+    gap: 10px;
+}
+
+.animal-profile dt {
+    grid-column-start: 1;
+    clear: left;
+    text-align: left;
+    font-weight: bold;
+    color: var(--text1);
+}
+.animal-profile dt::after {
+    content: ":";
+}
+.animal-profile dd {
+    grid-column-start: 2;
+    float: left;
+    text-align: left;
+    margin-left: 0px;
+    padding: 0 0 0.5em 0;
+    color: var(--text1);
+}
+.animal-image-detail{
+    border-radius: 20px;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
 }
