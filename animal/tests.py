@@ -7,6 +7,7 @@ class AnimalListViewTests(TestCase):
     def setUp(self):
         Animal.objects.create(
             name="Buddy",
+            animal_type="Dog",
             gender="M",
             personality_desc="Friendly and playful",
             coloration="Brown",
@@ -18,6 +19,7 @@ class AnimalListViewTests(TestCase):
         )
         Animal.objects.create(
             name="Luna",
+            animal_type="Cat",
             gender="F",
             personality_desc="Calm and affectionate",
             coloration="White",
@@ -29,6 +31,7 @@ class AnimalListViewTests(TestCase):
         )
         Animal.objects.create(
             name="Shadow",
+            animal_type="Cat",
             gender="M",
             personality_desc="Shy",
             coloration="Black",
@@ -74,6 +77,41 @@ class AnimalListViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def test_staff_can_view_unavailable_animals_in_listing_and_profile(self):
+        staff_user = get_user_model().objects.create_user(
+            username="listing-staff",
+            password="test-password",
+            is_staff=True,
+        )
+        self.client.force_login(staff_user)
+        animal = Animal.objects.get(name="Shadow")
+
+        listing_response = self.client.get(reverse("animal_list"))
+        detail_response = self.client.get(
+            reverse("animal_detail", args=[animal.pk])
+        )
+
+        self.assertContains(listing_response, "Shadow")
+        self.assertContains(listing_response, "Unavailable")
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertContains(detail_response, "Recovering")
+
+    def test_customers_still_cannot_view_unavailable_animals(self):
+        customer = get_user_model().objects.create_user(
+            username="listing-customer",
+            password="test-password",
+        )
+        animal = Animal.objects.get(name="Shadow")
+        self.client.force_login(customer)
+
+        response = self.client.get(reverse("animal_list"))
+
+        self.assertNotContains(response, "Shadow")
+        self.assertEqual(
+            self.client.get(reverse("animal_detail", args=[animal.pk])).status_code,
+            404,
+        )
 
     def test_filters_animals_by_breed(self):
         response = self.client.get(reverse("animal_list"), {"breed": "Cat"})
@@ -152,6 +190,7 @@ class AnimalCreateViewTests(TestCase):
         )
         self.animal_data = {
             "name": "New Friend",
+            "animal_type": "Cat",
             "gender": "F",
             "personality_desc": "Gentle and curious",
             "coloration": "Gray",
@@ -216,6 +255,7 @@ class AnimalCreateViewTests(TestCase):
         for index in range(50):
             Animal.objects.create(
                 name=f"Available {index}",
+                animal_type="Dog",
                 gender="M",
                 personality_desc="Friendly",
                 coloration="Brown",
@@ -237,6 +277,7 @@ class AnimalCreateViewTests(TestCase):
         for index in range(50):
             Animal.objects.create(
                 name=f"Unavailable {index}",
+                animal_type="Dog",
                 gender="M",
                 personality_desc="Friendly",
                 coloration="Brown",
@@ -251,3 +292,140 @@ class AnimalCreateViewTests(TestCase):
 
         self.assertRedirects(response, reverse("animal_list"))
         self.assertEqual(Animal.objects.filter(available='available').count(), 1)
+
+
+class AnimalEditViewTests(TestCase):
+    def setUp(self):
+        self.manager = get_user_model().objects.create_superuser(
+            username="animal-manager",
+            password="test-password",
+            email="manager@example.com",
+        )
+        self.employee = get_user_model().objects.create_user(
+            username="animal-employee",
+            password="test-password",
+            is_staff=True,
+        )
+        self.customer = get_user_model().objects.create_user(
+            username="animal-customer",
+            password="test-password",
+        )
+        self.animal = Animal.objects.create(
+            name="Original Name",
+            animal_type="Dog",
+            gender="F",
+            personality_desc="Gentle",
+            coloration="Brown",
+            age=4,
+            breed="Mixed",
+            hair_type="SHORT",
+            medical_desc="Healthy",
+            available="available",
+        )
+
+    def test_manager_can_open_edit_form(self):
+        self.client.force_login(self.manager)
+
+        response = self.client.get(reverse("animal_edit", args=[self.animal.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "shelter_project/animal_edit.html")
+        self.assertContains(response, "Original Name")
+
+    def test_manager_can_update_animal_profile(self):
+        self.client.force_login(self.manager)
+
+        response = self.client.post(
+            reverse("animal_edit", args=[self.animal.pk]),
+            {
+                "name": "Updated Name",
+                "animal_type": "Dog",
+                "gender": "M",
+                "personality_desc": "Playful",
+                "coloration": "Black",
+                "age": "5",
+                "breed": "Terrier",
+                "hair_type": "SHORT",
+                "medical_desc": "Healthy",
+                "available": "pending",
+            },
+        )
+
+        self.assertRedirects(response, reverse("animal_list"))
+        self.animal.refresh_from_db()
+        self.assertEqual(self.animal.name, "Updated Name")
+        self.assertEqual(self.animal.age, 5)
+        self.assertEqual(self.animal.available, "pending")
+
+    def test_employee_can_edit_animal_but_customer_cannot(self):
+        self.client.force_login(self.employee)
+        employee_response = self.client.get(
+            reverse("animal_edit", args=[self.animal.pk])
+        )
+        self.assertEqual(employee_response.status_code, 200)
+
+        self.client.force_login(self.customer)
+        customer_response = self.client.get(
+            reverse("animal_edit", args=[self.animal.pk])
+        )
+        self.assertEqual(customer_response.status_code, 403)
+
+    def test_anonymous_user_is_redirected_to_login(self):
+        url = reverse("animal_edit", args=[self.animal.pk])
+        response = self.client.get(url)
+
+        self.assertRedirects(response, f"{reverse('login')}?next={url}")
+
+    def test_edit_link_shows_to_staff_but_not_customers(self):
+        url = reverse("animal_edit", args=[self.animal.pk])
+        self.client.force_login(self.employee)
+        employee_response = self.client.get(
+            reverse("animal_detail", args=[self.animal.pk])
+        )
+        self.assertContains(employee_response, url)
+
+        self.client.force_login(self.customer)
+        customer_response = self.client.get(
+            reverse("animal_detail", args=[self.animal.pk])
+        )
+        self.assertNotContains(customer_response, url)
+
+    def test_cannot_make_animal_available_when_at_capacity(self):
+        self.client.force_login(self.manager)
+        self.animal.available = "pending"
+        self.animal.save()
+
+        for index in range(50):
+            Animal.objects.create(
+                name=f"Available {index}",
+                animal_type="Dog",
+                gender="M",
+                personality_desc="Friendly",
+                coloration="Brown",
+                age=1,
+                breed="Mixed",
+                hair_type="SHORT",
+                medical_desc="Healthy",
+                available="available",
+            )
+
+        response = self.client.post(
+            reverse("animal_edit", args=[self.animal.pk]),
+            {
+                "name": self.animal.name,
+                "animal_type": self.animal.animal_type,
+                "gender": self.animal.gender,
+                "personality_desc": self.animal.personality_desc,
+                "coloration": self.animal.coloration,
+                "age": self.animal.age,
+                "breed": self.animal.breed,
+                "hair_type": self.animal.hair_type,
+                "medical_desc": self.animal.medical_desc,
+                "available": "available",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "maximum of 50 available animals")
+        self.animal.refresh_from_db()
+        self.assertEqual(self.animal.available, "pending")
