@@ -40,4 +40,10 @@ urlpatterns = [
     	name="cancel_appointment",
     ),
 
+    path(
+    	"customer/appointments/history/",
+    	views.previous_appointments,
+    	name="previous_appointments",
+    ),
+
 ]
