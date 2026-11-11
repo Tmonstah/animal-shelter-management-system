@@ -72,7 +72,11 @@ git push -u origin feature/your-feature-name
 
 Then create a Pull Request on GitHub.
 
-
+How to create a super user / admin
+start the docker container:
+docker compose up -d
+docker compose exec web python manage.py createsuperuser
+then follow instructions 
 -------------------------------------------
 To add animal data to your local container use this command to add animal fixture.
     docker compose exec web python manage.py loaddata XXXX.json
