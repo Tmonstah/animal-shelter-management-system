@@ -11,10 +11,14 @@ class AnimalFilterForm(forms.Form):
     min_age = forms.IntegerField(required=False, min_value=0, label="Minimum age")
     max_age = forms.IntegerField(required=False, min_value=0, label="Maximum age")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, include_unavailable=False, **kwargs):
         super().__init__(*args, **kwargs)
+        animals = Animal.objects.all()
+        if not include_unavailable:
+            animals = animals.filter(available="available")
+
         animal_types = (
-            Animal.objects.filter(available="available")
+            animals
             .order_by("animal_type")
             .values_list("animal_type", flat=True)
             .distinct()
@@ -23,7 +27,7 @@ class AnimalFilterForm(forms.Form):
             (animal_type, animal_type) for animal_type in animal_types
         ]
         breeds = (
-            Animal.objects.filter(available="available")
+            animals
             .order_by("breed")
             .values_list("breed", flat=True)
             .distinct()
@@ -48,11 +52,13 @@ class AnimalFilterForm(forms.Form):
 
 class AnimalCreateForm(forms.ModelForm):
     age = forms.IntegerField(min_value=0)
+
     # refer to django documentation for Meta relationship of models and model forms
     class Meta:
         model = Animal
         fields = (
             "name",
+            "animal_type",
             "gender",
             "personality_desc",
             "coloration",
@@ -60,5 +66,25 @@ class AnimalCreateForm(forms.ModelForm):
             "breed",
             "hair_type",
             "medical_desc",
+            "image",
+        )
+
+
+class AnimalUpdateForm(forms.ModelForm):
+    age = forms.IntegerField(min_value=0)
+
+    class Meta:
+        model = Animal
+        fields = (
+            "name",
+            "animal_type",
+            "gender",
+            "personality_desc",
+            "coloration",
+            "age",
+            "breed",
+            "hair_type",
+            "medical_desc",
+            "available",
             "image",
         )

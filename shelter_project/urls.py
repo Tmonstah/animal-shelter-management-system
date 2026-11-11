@@ -32,6 +32,11 @@ urlpatterns = [
         animal_views.animal_detail,
         name='animal_detail',
     ),
+    path(
+        'animals/<str:animal_id>/edit/',
+        animal_views.animal_edit,
+        name='animal_edit',
+    ),
     path('home/', shelter_views.home, name='home'),
     path("", include("accounts.urls")),
     path("", include("adoptions.urls")),
