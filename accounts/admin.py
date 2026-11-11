@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomerProfile, EmployeeProfile, EmployeeAccessRequest, EmployeeInvite, User
 from django.utils import timezone
 
+admin.site.site_url = "/home/"  # Send the Django admin "View site" button to the shelter home page.
+
 admin.site.register(User, UserAdmin) # this registers accounts.User model in the admin site & tells Django to use its built-in UserAdmin interface for it
 
 admin.site.register(EmployeeInvite) # Allow superusers to create and manage employee invitation codes
