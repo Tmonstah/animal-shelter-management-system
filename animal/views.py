@@ -1,5 +1,6 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
+from django.db.models import Case, IntegerField, Value, When
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -37,6 +38,21 @@ def animal_list(request):
             animals = animals.filter(age__gte=filters["min_age"])
         if filters["max_age"] is not None:
             animals = animals.filter(age__lte=filters["max_age"])
+
+    if staff_view:
+        animals = animals.order_by(
+            Case(
+                When(available="pending", then=Value(0)),
+                When(available="available", then=Value(1)),
+                When(available="unavailable", then=Value(2)),
+                default=Value(3),
+                output_field=IntegerField(),
+            ),
+            "name",
+            "pk",
+        )
+    else:
+        animals = animals.order_by("name", "pk")
 
     return render(
         request,

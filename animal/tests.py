@@ -97,6 +97,22 @@ class AnimalListViewTests(TestCase):
         self.assertEqual(detail_response.status_code, 200)
         self.assertContains(detail_response, "Recovering")
 
+    def test_staff_listing_orders_pending_available_then_unavailable(self):
+        Animal.objects.filter(name="Luna").update(available="pending")
+        staff_user = get_user_model().objects.create_user(
+            username="ordered-listing-staff",
+            password="test-password",
+            is_staff=True,
+        )
+        self.client.force_login(staff_user)
+
+        response = self.client.get(reverse("animal_list"))
+
+        self.assertEqual(
+            [animal.name for animal in response.context["animals"]],
+            ["Luna", "Buddy", "Shadow"],
+        )
+
     def test_customers_still_cannot_view_unavailable_animals(self):
         customer = get_user_model().objects.create_user(
             username="listing-customer",
