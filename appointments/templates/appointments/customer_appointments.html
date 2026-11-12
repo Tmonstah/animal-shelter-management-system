@@ -1,8 +1,20 @@
 {% extends "shelter_project/base.html" %}
 
 {% block content %}
+<p>
+    <a href="{% url 'customer_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
+
+<p>
+    <a href="{% url 'previous_appointments' %}">
+        View Previous Appointments
+    </a>
+</p>
 
 <h1>Upcoming Appointments</h1>
+<p>For canceling an appointment, please call 123-456-789.</p>
 
 {% for appointment in upcoming_appointments %}
 

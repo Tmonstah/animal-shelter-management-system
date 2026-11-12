@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 
 from accounts.models import CustomerProfile
 from animal.models import Animal
@@ -83,7 +84,7 @@ def customer_appointments(request):
 
     upcoming_appointments = (
         customer_profile.appointments
-        .filter(status__in=["pending", "approved"])
+        .filter(status__in=["pending", "approved"], appointment_date__gte=timezone.localdate())
         .select_related("animal")
         .order_by("appointment_date", "appointment_time")
     )
@@ -113,7 +114,7 @@ def previous_appointments(request):
 
     previous_appointments = (
         customer_profile.appointments
-        .filter(status__in=["completed", "cancelled"])
+        .filter(status__in=["completed", "cancelled"],appointment_date__lt=timezone.localdate())
         .select_related("animal")
         .order_by("-appointment_date", "-appointment_time")
     )
