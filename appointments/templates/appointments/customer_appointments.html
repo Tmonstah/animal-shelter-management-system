@@ -1,24 +1,68 @@
 {% extends "shelter_project/base.html" %}
 
 {% block content %}
+<p>
+    <a href="{% url 'customer_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
 
-<h1>My Appointments</h1>
+<p>
+    <a href="{% url 'previous_appointments' %}">
+        View Previous Appointments
+    </a>
+</p>
 
-{% for appointment in appointments %}
+<h1>Upcoming Appointments</h1>
+<p>For canceling an appointment, please call 123-456-789.</p>
+
+{% for appointment in upcoming_appointments %}
 
     <div>
-        <h3>{{ appointment.animal.name }}</h3>
+        <h2>{{ appointment.animal.name }}</h2>
+
+        {% if appointment.animal.image %}
+            <img
+                src="{{ appointment.animal.image.url }}"
+                alt="{{ appointment.animal.name }}"
+                width="200"
+            >
+        {% endif %}
 
         <p>
-            Date: {{ appointment.appointment_date }}
+            <strong>Type:</strong>
+            {{ appointment.animal.animal_type }}
         </p>
 
         <p>
-            Time: {{ appointment.appointment_time }}
+            <strong>Breed:</strong>
+            {{ appointment.animal.breed }}
         </p>
 
         <p>
-            Status: {{ appointment.get_status_display }}
+            <strong>Age:</strong>
+            {{ appointment.animal.age }} years old
+        </p>
+
+        <p>
+            <strong>Appointment Date:</strong>
+            {{ appointment.appointment_date }}
+        </p>
+
+        <p>
+            <strong>Appointment Time:</strong>
+            {{ appointment.appointment_time }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ appointment.get_status_display }}
+        </p>
+
+        <p>
+            <a href="{% url 'animal_detail' appointment.animal.pk %}">
+                View Animal Details
+            </a>
         </p>
 
         <hr>
@@ -26,9 +70,15 @@
 
 {% empty %}
 
-    <p>You do not have any appointments scheduled.</p>
+    <p>You do not have any upcoming appointments.</p>
 
 {% endfor %}
+
+<p>
+    <a href="{% url 'previous_appointments' %}">
+        View Previous Appointments
+    </a>
+</p>
 
 <p>
     <a href="{% url 'customer_dashboard' %}">

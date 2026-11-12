@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 
 from accounts.models import CustomerProfile
 from animal.models import Animal
@@ -81,17 +82,48 @@ def customer_appointments(request):
         user=request.user,
     )
 
-    appointments = (
+    upcoming_appointments = (
         customer_profile.appointments
+        .filter(status__in=["pending", "approved"], appointment_date__gte=timezone.localdate())
+        .select_related("animal")
+        .order_by("appointment_date", "appointment_time")
+    )
+
+
+    return render(
+        request,
+        "appointments/customer_appointments.html",
+        {
+            "upcoming_appointments": upcoming_appointments,
+        },
+    )
+
+#This view is to show all previous appointments for the customer shows both completed and canceled
+
+@login_required
+def previous_appointments(request):
+    if request.user.is_staff:
+        return HttpResponseForbidden(
+            "Employees cannot access the customer appointment history page."
+        )
+
+    customer_profile = get_object_or_404(
+        CustomerProfile,
+        user=request.user,
+    )
+
+    previous_appointments = (
+        customer_profile.appointments
+        .filter(status__in=["completed", "cancelled"],appointment_date__lt=timezone.localdate())
         .select_related("animal")
         .order_by("-appointment_date", "-appointment_time")
     )
 
     return render(
         request,
-        "appointments/customer_appointments.html",
+        "appointments/previous_appointments.html",
         {
-            "appointments": appointments,
+            "previous_appointments": previous_appointments,
         },
     )
 

@@ -60,5 +60,5 @@ class AdoptionApplication(models.Model):
     def __str__(self):
         return (
             f"{self.first_name} {self.last_name} - "
-            f"{self.animal_id.name} - {self.status}"
+            f"{self.animal.name} - {self.status}"
         )
