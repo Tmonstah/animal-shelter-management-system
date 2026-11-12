@@ -1,0 +1,48 @@
+{% extends "shelter_project/base.html" %}
+
+{% block content %}
+
+<h1>Previous Appointments</h1>
+
+{% for appointment in previous_appointments %}
+
+    <div>
+        <h2>{{ appointment.animal.name }}</h2>
+
+        <p>
+            <strong>Date:</strong>
+            {{ appointment.appointment_date }}
+        </p>
+
+        <p>
+            <strong>Time:</strong>
+            {{ appointment.appointment_time }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ appointment.get_status_display }}
+        </p>
+
+        <p>
+            <a href="{% url 'animal_detail' appointment.animal.pk %}">
+                View Animal Details
+            </a>
+        </p>
+
+        <hr>
+    </div>
+
+{% empty %}
+
+    <p>You do not have any previous appointments.</p>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'customer_appointments' %}">
+        Back to Upcoming Appointments
+    </a>
+</p>
+
+{% endblock %}
