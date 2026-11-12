@@ -32,7 +32,7 @@ Build and start the containers:
 docker compose up --build
 
 Open the application on your Web Browser at:
-http://localhost:8000
+http://localhost:8000/home
 
 Stop the Project
 docker compose down
