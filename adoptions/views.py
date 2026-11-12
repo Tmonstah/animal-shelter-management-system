@@ -98,12 +98,12 @@ def customer_adoption_applications(request):
     adoption_applications = (
         customer_profile.adoption_applications
         .select_related("animal")
-        .order_by("-submitted_at")
+        .order_by("status", "-submitted_at")
     )
 
     return render(
         request,
-        "adoptions/customer_adoption_applications.html",
+        "customer_applications.html",
         {
             "adoption_applications": adoption_applications,
         },
