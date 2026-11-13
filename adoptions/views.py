@@ -8,6 +8,7 @@ from .models import AdoptionApplication
 from accounts.models import CustomerProfile
 from animal.models import Animal
 from django.utils import timezone
+from django.db.models import Case, When, Value, CharField
 
 # We only want people who have accounts to fill out applications
 # easier for tracking them.
@@ -94,16 +95,23 @@ def customer_adoption_applications(request):
         CustomerProfile,
         user=request.user,
     )
+    order_status = Case(
+        When(status= "approved", then= Value("b")),
+        When(status= "denied", then= Value("c")),
+        When(status= "pending", then= Value("a")),
+        default= Value("d"),
+        output_field= CharField()
+    )
 
     adoption_applications = (
         customer_profile.adoption_applications
         .select_related("animal")
-        .order_by("status", "-submitted_at")
+        .order_by(order_status, "-submitted_at")
     )
 
     return render(
         request,
-        "customer_applications.html",
+        "customer_adoption_applications.html",
         {
             "adoption_applications": adoption_applications,
         },
