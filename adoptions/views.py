@@ -45,6 +45,8 @@ def adoption_form_view(request, pk):
             application.customer_profile = request.user.customer_profile
             application.animal = animal_id
             application.save()
+            animal_id.available = "pending"
+            animal_id.save()
             return render(
                 request,
                 "adoption_application_success.html",
@@ -156,9 +158,9 @@ def approve_adoption_application(request, application_id):
         adoption_application.reviewed_at = timezone.now()
         adoption_application.save()
 
-        # Mark the animal as unavailable once an application is approved.
+        # Mark the animal as adopted once an application is approved.
         animal = adoption_application.animal_id
-        animal.available = 'unavailable'
+        animal.available = 'adopted'
         animal.save()
 
     return redirect("employee_adoption_applications")
@@ -181,5 +183,9 @@ def deny_adoption_application(request, application_id):
         adoption_application.reviewed_by = request.user
         adoption_application.reviewed_at = timezone.now()
         adoption_application.save()
+        # Mark the animal as available once an application is denied.
+        animal = adoption_application.animal_id
+        animal.available = 'available'
+        animal.save()
 
     return redirect("employee_adoption_applications")
