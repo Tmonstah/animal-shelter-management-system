@@ -3,6 +3,7 @@
 {% block content %}
 
 <!-- Customer profile page. -->
+
 <h1>Customer Profile</h1>
 
 <!-- Return to the customer dashboard-->
@@ -22,5 +23,12 @@
 <p>
     <a href="{% url 'logout' %}">Logout</a>
 </p>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 {% endblock %}
