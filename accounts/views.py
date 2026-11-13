@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib.auth import logout
+from django.contrib import messages
 from .forms import EmployeeProfileForm, CustomerProfileForm, CustomerRegistrationForm
 from .models import EmployeeAccessRequest, EmployeeProfile, EmployeeInvite, CustomerProfile
 
@@ -110,6 +111,7 @@ def customer_profile(request): # Employee access prvention Non-Functional
 
         if customer_profile_form.is_valid():
             customer_profile_form.save()
+            messages.add_message(request, messages.SUCCESS, "Profile updates have been saved.")
             return redirect("customer_profile")
 
     else:
@@ -146,7 +148,10 @@ def employee_profile(request): # Customer access prvention Non-Functional
 
         if employee_profile_form.is_valid():
             employee_profile_form.save()
+            messages.add_message(request, messages.SUCCESS, "Profile updates have been saved.")
             return redirect("employee_profile")
+        else:
+            messages.add_message(request, messages.ERROR, employee_profile_form.errors)
 
     else:
         employee_profile_form = EmployeeProfileForm(

@@ -1,36 +1,54 @@
 {% extends "shelter_project/base.html" %}
 
 {% block content %}
+<p>
+    <a href="{% url 'customer_dashboard' %}">
+        Back to Dashboard
+    </a>
+</p>
 
-<h1>My Adoption Applications</h1>
+<p>For canceling an adoption application, please call 123-456-7890.</p>
 
-{% for application in adoption_applications %}
+{% regroup adoption_applications by status as adoption_applications_grouped %}
 
-    <div>
-        <h3>{{ application.animal.name }}</h3>
+{% for application_group in adoption_applications_grouped %}
+    <h1> {{ application_group.grouper|capfirst }} Applications:</h1>
+        
+        {% for application in application_group.list %}
+            <div class="dashboard-grid">
+                <div>
+                    <h2> {{ application.animal.name }} </h2>
+                    <p>
+                        Application Submitted Date:
+                        {{ application.submitted_at }}
+                    </p>
+                    <hr>
 
-        <p>
-            Status: {{ application.get_status_display }}
-        </p>
+                    {% if application.status == "approved" or application.status == "denied" %}
+                        <p>
+                            Reviewed by:
+                            {{ application.reviewed_by.username }}
+                        </p>
+                        <p>
+                            Reasoning:
+                            {{ application.reviewed_reasoning }}
+                        </p>
 
-        <p>
-            Submitted: {{ application.submitted_at }}
-        </p>
+                    {% endif %}
 
-        {% if application.reason_for_adoption %}
-            <p>
-                Reason: {{ application.reason_for_adoption }}
-            </p>
-        {% endif %}
-
-        <hr>
-    </div>
-
+                    <p>
+                        <a href="{% url 'animal_detail' application.animal.id %}">
+                            View Animal Details
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+        {% endfor %}
 {% empty %}
-
-    <p>You have not submitted any adoption applications yet.</p>
-
+    <p>You do not have any adoption applications available.</p>
 {% endfor %}
+
 
 <p>
     <a href="{% url 'customer_dashboard' %}">
