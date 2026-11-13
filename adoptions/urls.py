@@ -17,7 +17,7 @@ urlpatterns = [
     ),
 
     path(
-   	"employee/applications/",
+   	    "employee/applications/",
     	views.employee_adoption_applications,
     	name="employee_adoption_applications",
     ),
