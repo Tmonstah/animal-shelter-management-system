@@ -95,12 +95,7 @@ def animal_create(request):
 
 
 def animal_detail(request, animal_id):
-    animal_query = Animal.objects.all()
-    if not (
-        request.user.is_authenticated
-        and (request.user.is_staff or request.user.is_superuser)
-    ):
-        animal_query = animal_query.filter(available="available")
+    animal_query = Animal.objects.all().prefetch_related("medical_records")
     animal = get_object_or_404(animal_query, pk=animal_id)
     return render(
         request,

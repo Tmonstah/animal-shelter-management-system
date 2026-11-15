@@ -54,6 +54,11 @@ class AdoptionApplication(models.Model):
         related_name="reviewed_adoption_applications",
     )
 
+    reviewed_reasoning = models.CharField(
+        max_length=200, 
+        blank=True,
+    )
+
     submitted_at = models.DateTimeField(auto_now_add=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)
 

@@ -27,8 +27,16 @@
             <dt>Hair type</dt>
             <dd>{{ animal.get_hair_type_display }}</dd>
 
-            <dt>Medical information</dt>
-            <dd>{{ animal.medical_desc }}</dd>
+            <dt>Medical Records</dt>
+            {% for record in animal.medical_records.all %}
+                {% if user.is_superuser or user.is_staff %}
+                    <dd> <strong>-{{ record.record_type }}:</strong> {{ record.description }}</dd>
+                {% else %}
+                    {% if record.record_type == "vaccination" or record.record_type == "injury" %}
+                        <dd> <strong>-{{ record.record_type }}:</strong> {{ record.description }}</dd>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
 
             <dt>Adoption status</dt>
             <dd>{{ animal.available }}</dd>
@@ -38,40 +46,36 @@
         </dl>
     </article>
 
-        {% if user.is_authenticated %}
-            {% if user.is_superuser or user.is_staff %}
-                <p><a href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
-            {% endif %}
+    {% if user.is_authenticated %}
+        {% if user.is_superuser or user.is_staff %}
+            <p><a href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
         {% endif %}
-        {% if animal.available == "available"%}
-            {% if user.is_authenticated %} 
-                {% if not user.is_staff and not user.is_super_user%}
-                    <p>
-                        <a href="{% url 'adoption_application_create' animal.pk %}">
-                            Apply for Adoption
-                        </a>
-                    </p>
-                    <p>
-                        <a href="{% url 'appointment_create' animal.pk %}">
-                            Schedule Meet and Greet
-                        </a>
-                    </p>
-                {% endif %}
-
-            {% elif not user.is_authenticated %}
-
+    {% endif %}
+    {% if animal.available == "available"%}
+        {% if user.is_authenticated %} 
+            {% if not user.is_staff and not user.is_super_user%}
                 <p>
-                    <a href="{% url 'login' %}">
-                        Login to apply for adoption
+                    <a href="{% url 'adoption_application_create' animal.pk %}">
+                        Apply for Adoption
                     </a>
                 </p>
-
                 <p>
-                    <a href="{% url 'login' %}">
-                        Login to schedule a meet and greet
+                    <a href="{% url 'appointment_create' animal.pk %}">
+                        Schedule Meet and Greet
                     </a>
                 </p>
             {% endif %}
 
+        {% elif not user.is_authenticated %}
+
+            <p> 
+                To schedule a Meet & Greet or apply for an application
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+            </p>
+
         {% endif %}
+
+    {% endif %}
 {% endblock %}

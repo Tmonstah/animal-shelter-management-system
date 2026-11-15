@@ -16,6 +16,7 @@ class Animal(models.Model):
         ("available", "Available"),
         ("pending", "Pending"),
         ("unavailable", "Unavailable"),
+        ("adopted", "Adopted"),
     
     ]
 
@@ -39,6 +40,9 @@ class Animal(models.Model):
         blank=True,
         null=True
     )
+
+    def __str__(self):
+        return f"{self.name} (id: {self.id})"
 
 def __str__(self):
     return self.name

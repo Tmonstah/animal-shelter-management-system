@@ -3,22 +3,55 @@
 {% block content %}
 
 <!-- Customer dashboard-->
-<h1>Customer Dashboard</h1>
+<h1>My Dashboard</h1>
 
-<p>Welcome, {{ request.user.first_name|default:request.user.username }}.</p>
+<p>Welcome back, {{ request.user.first_name|default:request.user.username }}!</p>
+<p>Manage your account here.</p>
 
 <!-- Customer profile management-->
-<p>
-    <a href="{% url 'customer_profile' %}">My Profile</a>
-</p>
+ <div class="dashboard-grid">
+    <div>
+        <h2>My Profile</h2>
+        <p>View and update your personal informaton</p>
+        <p>
+            <a href="{% url 'customer_profile' %}">
+                Account Settings
+            </a>
+        </p>
+    </div>
 
-<p>
-    <a href="{% url 'customer_appointments' %}">
-        My Appointments
-    </a>
-</p>
 
-<p>
-    <a href="{% url 'logout' %}">Logout</a>
-</p>
+
+    <div>
+        <h2>My Meet & Greet Appointments</h2>
+        <p>View all your pending and accepted appointments</p>
+        <p>
+            <a href="{% url 'customer_appointments' %}">
+                View Appointments
+            </a>
+        </p>
+    </div>
+
+    <div>
+        <h2>My Applications</h2>
+        <p>View your current applications</p>
+        <p>
+            <a href="{% url 'customer_adoption_applications' %}">
+                View Applications
+            </a>
+        </p>
+    </div>
+
+
+    <div>
+        <h2>Browse Available Animals</h2>
+        <p>Be the next forever home for an amazing animal</p>
+        <p>
+            <a href="{% url 'animal_list' %}">
+                Browse Animals
+            </a>
+        </p>
+    </div>
+</div>
+
 {% endblock %}

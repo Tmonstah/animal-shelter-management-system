@@ -8,6 +8,7 @@ from .models import AdoptionApplication
 from accounts.models import CustomerProfile
 from animal.models import Animal
 from django.utils import timezone
+from django.db.models import Case, When, Value, CharField
 
 # We only want people who have accounts to fill out applications
 # easier for tracking them.
@@ -44,6 +45,8 @@ def adoption_form_view(request, pk):
             application.customer_profile = request.user.customer_profile
             application.animal = animal_id
             application.save()
+            animal_id.available = "pending"
+            animal_id.save()
             return render(
                 request,
                 "adoption_application_success.html",
@@ -94,16 +97,23 @@ def customer_adoption_applications(request):
         CustomerProfile,
         user=request.user,
     )
+    order_status = Case(
+        When(status= "approved", then= Value("b")),
+        When(status= "denied", then= Value("c")),
+        When(status= "pending", then= Value("a")),
+        default= Value("d"),
+        output_field= CharField()
+    )
 
     adoption_applications = (
         customer_profile.adoption_applications
         .select_related("animal")
-        .order_by("-submitted_at")
+        .order_by(order_status, "-submitted_at")
     )
 
     return render(
         request,
-        "adoptions/customer_adoption_applications.html",
+        "customer_adoption_applications.html",
         {
             "adoption_applications": adoption_applications,
         },
@@ -148,9 +158,9 @@ def approve_adoption_application(request, application_id):
         adoption_application.reviewed_at = timezone.now()
         adoption_application.save()
 
-        # Mark the animal as unavailable once an application is approved.
+        # Mark the animal as adopted once an application is approved.
         animal = adoption_application.animal_id
-        animal.available = 'unavailable'
+        animal.available = 'adopted'
         animal.save()
 
     return redirect("employee_adoption_applications")
@@ -173,5 +183,9 @@ def deny_adoption_application(request, application_id):
         adoption_application.reviewed_by = request.user
         adoption_application.reviewed_at = timezone.now()
         adoption_application.save()
+        # Mark the animal as available once an application is denied.
+        animal = adoption_application.animal_id
+        animal.available = 'available'
+        animal.save()
 
     return redirect("employee_adoption_applications")
