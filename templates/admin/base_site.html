@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ title }} | Paw & Order Rescue Center
+{% endblock %}
+
+{% block branding %}
+    <div id="site-name">
+        <a href="{% url 'admin:index' %}">
+            Paw & Order Rescue Center
+        </a>
+    </div>
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
+{% endblock %}

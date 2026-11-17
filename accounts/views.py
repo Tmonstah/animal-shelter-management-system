@@ -157,6 +157,9 @@ def employee_profile(request): # Customer access prvention Non-Functional
         employee_profile_form = EmployeeProfileForm(
             instance=employee_profile
         )
+	
+    
+    is_manager = request.user.groups.filter(name="Manager").exists()
 
     #Display Profile
     return render(
@@ -164,6 +167,7 @@ def employee_profile(request): # Customer access prvention Non-Functional
         "accounts/employee_profile.html",
         {
             "employee_profile_form": employee_profile_form,
+	    "staff_role": "Manager" if is_manager else "Employee",
         },
     )
 

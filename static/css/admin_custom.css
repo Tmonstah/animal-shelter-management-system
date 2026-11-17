@@ -1,0 +1,534 @@
+
+/* Paw & Order Rescue Center - Admin Theme */
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+    --primary: #003049;
+    --secondary: #5a7b96;
+    --accent: #f3f1e0;
+
+    --header-bg: #003049;
+    --header-color: #ffffff;
+    --header-link-color: #ffffff;
+
+    --body-bg: #f3f1e0;
+    --body-fg: #003049;
+
+    --link-fg: #003049;
+    --link-hover-color: #5a7b96;
+    --link-selected-fg: #003049;
+
+    --darkened-bg: #e9edf0;
+    --selected-bg: #dce7ef;
+    --selected-row: #e7eef3;
+
+    --border-color: #c4d0d8;
+    --hairline-color: #dce3e8;
+
+    --button-bg: #003049;
+    --button-hover-bg: #5a7b96;
+
+    --default-button-bg: #003049;
+    --default-button-hover-bg: #5a7b96;
+
+    --font-family-primary: system-ui, sans-serif;
+
+    color-scheme: light;
+}
+
+/* General page styling */
+body {
+    background: #f3f1e0;
+    color: #003049;
+    font-size: 14px;
+}
+
+/* Header */
+#header {
+    background: #003049;
+    padding: 16px 24px;
+}
+
+#site-name a {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#user-tools {
+    font-size: 12px;
+}
+
+#user-tools a {
+    color: white;
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: #5a7b96;
+    padding: 12px 24px;
+    color: white;
+}
+
+div.breadcrumbs a {
+    color: white;
+}
+
+/* Main content */
+#content {
+    padding: 25px;
+}
+
+#content h1 {
+    color: #003049;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Sidebar */
+#nav-sidebar {
+    background: #fffafa;
+    border-right: 1px solid #c4d0d8;
+}
+
+#nav-sidebar .module {
+    margin: 10px;
+}
+
+#nav-sidebar a {
+    color: #003049;
+}
+
+#nav-sidebar a:hover {
+    color: #5a7b96;
+}
+
+/* Module headers */
+.module caption,
+.module h2 {
+    background: #003049;
+    color: white;
+    padding: 12px;
+}
+
+/* Tables */
+#changelist table {
+    background: white;
+    border-radius: 8px;
+}
+
+#changelist table thead th {
+    background: #003049;
+    color: white;
+    padding: 12px;
+}
+
+#changelist table thead th a {
+    color: white;
+}
+
+#changelist table tbody tr {
+    background: #ffffff;
+}
+
+#changelist table tbody tr:nth-child(even) {
+    background: #eef2f4;
+}
+
+#changelist table tbody td,
+#changelist table tbody th {
+    color: #003049;
+    padding: 12px;
+}
+
+#changelist table tbody a {
+    color: #003049;
+    font-weight: 500;
+}
+
+#changelist table tbody tr:hover {
+    background: #dce7ef;
+}
+
+/* Filters */
+#changelist-filter {
+    background: #fffafa;
+    border: 1px solid #c4d0d8;
+    border-radius: 8px;
+}
+
+#changelist-filter h2 {
+    background: #003049;
+    color: white;
+    padding: 12px;
+}
+
+#changelist-filter a {
+    color: #003049;
+}
+
+/* Forms */
+input,
+select,
+textarea {
+    border-radius: 6px;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+select,
+textarea {
+    background: white;
+    color: #003049;
+    border: 1px solid #b5c3cc;
+    padding: 8px;
+}
+
+/* Action buttons */
+.button,
+input[type="submit"],
+.submit-row input,
+.object-tools a {
+    background: #003049;
+    color: white;
+    border-radius: 7px;
+    padding: 10px 15px;
+    font-weight: 500;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+.object-tools a:hover {
+    background: #5a7b96;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    #content {
+        padding: 14px;
+    }
+
+    #site-name a {
+        font-size: 18px;
+    }
+
+    #changelist {
+
+
+        overflow-x: auto;
+    }
+}
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+    --body-fg: #003049;
+    --body-quiet-color: #35556a;
+    --body-loud-color: #003049;
+    --link-fg: #003049;
+    --link-hover-color: #245f80;
+    --link-selected-fg: #003049;
+
+    --body-bg: #f3f1e0;
+    --darkened-bg: #e7edf1;
+    --selected-bg: #dce7ef;
+}
+
+/* Recent Actions panel */
+#content-related {
+    background: #fffafa;
+    color: #003049;
+    border: 1px solid #ccd6dc;
+    border-radius: 8px;
+}
+
+#content-related h2 {
+    background: #003049;
+    color: #ffffff;
+    padding: 12px;
+}
+
+#content-related h3,
+#content-related p,
+#content-related li,
+#content-related .mini,
+#content-related .actionlist,
+#content-related .actionlist a {
+    color: #003049 !important;
+}
+
+#content-related .actionlist a:hover {
+    color: #245f80 !important;
+    text-decoration: underline;
+}
+
+/* Filter sidebar */
+#changelist-filter {
+    background: #fffafa;
+    color: #003049;
+}
+
+#changelist-filter h2 {
+    background: #003049;
+    color: white;
+}
+
+#changelist-filter h3,
+#changelist-filter li,
+#changelist-filter li a,
+#changelist-filter details summary,
+#changelist-filter details summary strong {
+    color: #003049 !important;
+}
+
+#changelist-filter li.selected a {
+    color: #003049 !important;
+    font-weight: 700;
+}
+
+#changelist-filter a:hover {
+    color: #245f80 !important;
+    text-decoration: underline;
+}
+
+/* Sidebar navigation */
+#nav-sidebar {
+    background: #fffafa;
+}
+
+#nav-sidebar .module caption,
+#nav-sidebar .module caption a,
+#nav-sidebar .module h2,
+#nav-sidebar .module h2 a {
+    background: #003049;
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+#nav-sidebar .module th a,
+#nav-sidebar .module td a,
+#nav-sidebar a.section {
+    color: #003049;
+}
+
+#nav-sidebar .current-model {
+    background: #dce7ef;
+}
+
+/* Tables, labels, and secondary text */
+#changelist .actions,
+#changelist .actions span,
+#changelist .paginator,
+.help,
+.helptext,
+.quiet,
+.small,
+.small.quiet {
+    color: #35556a !important;
+}
+
+#changelist table tbody a {
+    color: #003049 !important;
+}
+
+#changelist table tbody a:hover {
+    color: #245f80 !important;
+    text-decoration: underline;
+}
+
+/* Form fields */
+input,
+select,
+textarea {
+    color: #003049;
+}
+
+input::placeholder {
+    color: #637987;
+}
+
+/* Readable content headings */
+#content h1,
+#content h2,
+#content h3 {
+    color: #003049;
+}
+
+/* Preserve white text on dark module headers */
+#content .module caption,
+#content .module caption a,
+#content .module h2 {
+    color: #ffffff;
+}
+
+/* Accessibility: visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid #5a7b96;
+    outline-offset: 2px;
+}
+
+
+/* =========================================
+   PAW & ORDER - FULL WIDTH ADMIN DASHBOARD
+   ========================================= */
+
+/* Remove Django's narrow dashboard column */
+body.dashboard #content {
+    display: block;
+    box-sizing: border-box;
+    width: calc(100% - 64px) !important;
+    max-width: 1400px;
+    margin: 0 auto !important;
+    padding: 30px 0;
+}
+
+/* Remove the space reserved for the old sidebar */
+body.dashboard .colMS {
+    margin-right: 0 !important;
+}
+
+/* Dashboard heading */
+body.dashboard #content > h1 {
+    margin: 0 0 24px;
+    font-size: 26px;
+    color: #003049;
+    text-align: left;
+}
+
+/* Full-width container holding the sections */
+body.dashboard #content-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 20px;
+
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: none !important;
+    float: none !important;
+    margin: 0;
+}
+
+/* Management cards */
+body.dashboard #content-main > .module {
+    box-sizing: border-box;
+    flex: 0 0 calc(50% - 10px);
+    width: calc(50% - 10px);
+    min-width: 0;
+    margin: 0;
+
+    background: #fffafa;
+    border: 1px solid #c4d0d8;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0, 48, 73, 0.08);
+}
+
+/* Card tables */
+body.dashboard #content-main .module table {
+    width: 100%;
+    table-layout: auto;
+    margin: 0;
+}
+
+/* Card headings */
+body.dashboard #content-main .module caption {
+    background: #003049;
+    color: #ffffff !important;
+    padding: 15px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* Model rows */
+body.dashboard #content-main .module th,
+body.dashboard #content-main .module td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #e1e6e9;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* Model name column */
+body.dashboard #content-main .module th {
+    width: auto;
+    text-align: left;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+/* Action columns */
+body.dashboard #content-main .module td {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Model links */
+body.dashboard #content-main .module th a {
+    color: #003049;
+    font-weight: 600;
+}
+
+/* Action links */
+body.dashboard #content-main .module td a {
+    color: #003049;
+    font-weight: 500;
+}
+
+/* Recent actions below the cards */
+body.dashboard #content-related {
+    display: block;
+    box-sizing: border-box;
+    float: none !important;
+    clear: both;
+
+    width: 100% !important;
+    max-width: none !important;
+    margin: 24px 0 0 !important;
+    padding: 0;
+
+    background: #fffafa;
+    border: 1px solid #c4d0d8;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Recent actions heading */
+body.dashboard #content-related h2 {
+    background: #003049;
+    color: #ffffff !important;
+    padding: 15px 18px;
+    margin: 0;
+}
+
+/* Recent actions content */
+body.dashboard #content-related .module {
+    margin: 0;
+    background: #fffafa;
+}
+
+body.dashboard #content-related h3,
+body.dashboard #content-related .actionlist {
+    margin: 16px 20px;
+}
+
+/* Responsive layout */
+@media (max-width: 800px) {
+    body.dashboard #content {
+        width: calc(100% - 30px) !important;
+        padding: 20px 0;
+    }
+
+    body.dashboard #content-main > .module {
+        flex-basis: 100%;
+        width: 100%;
+    }
+}
