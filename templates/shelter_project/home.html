@@ -23,6 +23,7 @@
                             <img src="{{ animal.image.url}}" class="animal-image">
                             <p><strong>{{ animal.name }}</strong></p>
                             <p>{{ animal.personality_desc }}</p>
+                            <p><a href="{% url 'animal_detail' animal.id %}">Get to know me</a></p>
                     </section>
                 {% endif %}
             {% empty %}
