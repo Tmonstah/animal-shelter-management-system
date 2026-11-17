@@ -25,6 +25,7 @@
         <button type="submit">Filter animals</button>
         <a href="{% url 'animal_list' %}">Clear filters</a>
     </form>
+    <br>
 
     <div class="animal-grid">
         {% for animal in animals %}

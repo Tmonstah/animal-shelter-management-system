@@ -19,7 +19,7 @@
     color: var(--text2);
     margin: 0;
     font-family: var(--font);
-    align-items: center;
+    align-items: stretch;
 }
 .shelter > div:last-child {
     grid-column: 1 / -1;
@@ -100,11 +100,16 @@
     font-family: var(--font);
     color: var(--text1);
     flex: 1;
+
+}
+.main h1, h2, h3, p {
     margin-left: 20px;
+    margin-right:20px;
 }
 
 body {
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
     min-height: 100vh;
     background-color: var(--background);
     display: flex;
@@ -157,9 +162,9 @@ footer{
 /* Animal listing setup */
 .animal-grid {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 240px));;
     background-color: var(--background);
-    padding: 20px;
+    padding: 0px;
     gap: 10px;
     width: 80%;
 }
@@ -169,7 +174,8 @@ footer{
 a
 .animal-grid h3{
     text-align: Center;
-    margin-top: 0;
+    margin-top: 0px;
+    padding-top: 0px;
 }
 
 .animal-grid div {
@@ -184,6 +190,7 @@ a
     width: 200px;
     height: 200px;
     object-fit: cover;
+    border-radius: 20px;
 }
 
 
@@ -297,4 +304,30 @@ a
     padding: 15px 15px;
     color: var(--text2);
     border-radius: 10px;
+}
+
+/* Home Screen */
+.roadmap {
+    width: 100%;
+    height: auto;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.snap-container{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x manditory;
+    scroll-padding: 50%;
+}
+.snap-child {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    width: 200px;
+    margin: 20px;
+    margin-bottom: 0px;
+    border-radius: 20px;
+    border: 1px solid var(--head_foot-background);
+}
+.snap-child img {
+    border-radius: 20px;
 }
