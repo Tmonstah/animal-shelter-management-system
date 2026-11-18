@@ -2,6 +2,7 @@ import secrets
 import string
 
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 
 from django.db import models
 
@@ -23,7 +24,17 @@ class CustomerProfile(models.Model):
     )
 
     # Customer Meta data
-    phone_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        validators= [
+            RegexValidator(
+                regex='^\+[1-9]\d{1,14}$',
+                message="Enter a phone number in the format +11231234567.",
+                code="invalid_registration"
+            ),
+        ],
+    )
     address_line_1 = models.CharField(max_length=150, blank=True)
     address_line_2 = models.CharField(max_length=150, blank=True)
     city = models.CharField(max_length=100, blank=True)
@@ -46,11 +57,27 @@ class EmployeeProfile(models.Model): # Front to Backend connection 1:1
     )
 
     # Employee MetaData
-    phone_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        validators= [
+            RegexValidator(
+                regex='^\+[1-9]\d{1,14}$',
+                message="Enter a phone number in the format +11231234567.",
+                code="invalid_registration"
+            ),
+        ],
+    )
     employee_id = models.CharField(max_length=50, unique=True)
     job_title = models.CharField(max_length=100, blank=True)
     department = models.CharField(max_length=100, blank=True)
     hire_date = models.DateField(null=True, blank=True)
+    address_line_1 = models.CharField(max_length=150, blank=True)
+    address_line_2 = models.CharField(max_length=150, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20, blank=True)
+
 
 
     # TimeStamps

@@ -345,3 +345,15 @@ a
 .buttons:hover {
     box-shadow: 0 5px 10px 0 var(--accent)
 }
+
+
+/* To indicate required fields */
+.required label::after {
+    content: " *";
+    color: var(--text1);
+}
+
+/* Style form errors*/
+.errorlist {
+    color: red;
+}

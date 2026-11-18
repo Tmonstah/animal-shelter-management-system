@@ -4,17 +4,22 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib.auth import logout
 from django.contrib import messages
-from .forms import EmployeeProfileForm, CustomerProfileForm, CustomerRegistrationForm
+from .forms import EmployeeProfileForm, CustomerProfileForm, CustomerRegistrationForm, ProfileRegistrationForm
 from .models import EmployeeAccessRequest, EmployeeProfile, EmployeeInvite, CustomerProfile
 
 
 def register_customer(request):
     if request.method == "POST":
         registration_form = CustomerRegistrationForm(request.POST)
+        profile_registration_form = ProfileRegistrationForm(request.POST)
 
-        if registration_form.is_valid():
+        if registration_form.is_valid() and profile_registration_form.is_valid():
             user = registration_form.save()# Create the user account after all registration fields are validated.
-            CustomerProfile.objects.create(user=user) # Create profile for every registered customer and collect metadata
+            # Create profile for every registered customer and collect metadata
+            profile = profile_registration_form.save(commit=False)
+            profile.user = user
+            profile.save()
+
             invite_code = registration_form.cleaned_data.get(   # Check whether the registrant supplied an employee invite code.
                 "employee_invite_code"
             )
@@ -39,12 +44,13 @@ def register_customer(request):
 
     else:
         registration_form = CustomerRegistrationForm()
+        profile_registration_form = ProfileRegistrationForm()
 
     return render(
 
         request,
         "accounts/register_customer.html",
-        {"registration_form": registration_form},
+        {"registration_form": registration_form, "profile_registration_form": profile_registration_form},
     )
 
 
