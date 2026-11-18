@@ -9,7 +9,7 @@ from accounts.models import CustomerProfile
 from animal.models import Animal
 from django.utils import timezone
 from django.db.models import Case, When, Value, CharField
-
+from django.views.decorators.http import require_POST
 # We only want people who have accounts to fill out applications
 # easier for tracking them.
 @login_required 
@@ -122,18 +122,24 @@ def customer_adoption_applications(request):
 # This view is for the employee to see all the applications in the system
 @login_required
 def employee_adoption_applications(request):
-    if not request.user.is_staff:
+    if not request.user.is_staff or not request.user.has_perm("adoptions.view_adoptionapplication"):
         return HttpResponseForbidden(
-            "Customers cannot access employee adoption applications."
+            "You cannot access employee adoption applications."
         )
 
     adoption_applications = AdoptionApplication.objects.order_by(
         "-submitted_at"
     )
+    
+    adoption_applications = (
+        AdoptionApplication.objects
+        .select_related("animal", "customer_profile", "reviewed_by")
+        .order_by("-submitted_at")
+    )
 
     return render(
         request,
-        "adoptions/employee_adoption_applications.html",
+        "employee_adoption_applications.html",
         {
             "adoption_applications": adoption_applications,
         },
@@ -141,8 +147,9 @@ def employee_adoption_applications(request):
 
 # Allow the manager to approve animal applications            
 @login_required
+@require_POST
 def approve_adoption_application(request, application_id):
-    if not request.user.is_staff:
+    if not request.user.is_staff or not request.user.has_perm("adoptions.change_adoptionapplication"):
         return HttpResponseForbidden(
             "Customers cannot approve adoption applications."
         )
@@ -151,40 +158,61 @@ def approve_adoption_application(request, application_id):
         AdoptionApplication,
         pk=application_id,
     )
+    
+    animal = adoption_application.animal
 
-    if request.method == "POST":
-        adoption_application.status = "approved"
-        adoption_application.reviewed_by = request.user
-        adoption_application.reviewed_at = timezone.now()
-        adoption_application.save()
+    # Only pending applications can be approved.
+    if adoption_application.status != "pending":
+        return HttpResponseForbidden("Only pending applications can be approved.")
+    
+    # Prevent approving an application for an already adopted animal.
+    if animal.available == "adopted":
+        return HttpResponseForbidden("This animal has already been adopted.")
 
-        # Mark the animal as adopted once an application is approved.
-        animal = adoption_application.animal_id
-        animal.available = 'adopted'
-        animal.save()
+        # Prevent a second approved application for the same animal.
+    if AdoptionApplication.objects.filter(animal=animal, status="approved",).exclude(pk=adoption_application.pk).exists():
+        return HttpResponseForbidden("Another application has already been approved for this animal.")
+    
+    
+    adoption_application.status = "approved"
+    adoption_application.reviewed_by = request.user
+    adoption_application.reviewed_at = timezone.now()
+    adoption_application.save()
+
+    # Mark the animal as adopted once an application is approved.
+    animal = adoption_application.animal
+    animal.available = 'adopted'
+    animal.save()
 
     return redirect("employee_adoption_applications")
 
 # Allow a manager to deny an application            
 @login_required
+@require_POST
 def deny_adoption_application(request, application_id):
-    if not request.user.is_staff:
+    if not request.user.is_staff or not request.user.has_perm("adoptions.change_adoptionapplication"):
         return HttpResponseForbidden(
-            "Customers cannot deny adoption applications."
+            "You cannot deny adoption applications."
         )
 
     adoption_application = get_object_or_404(
         AdoptionApplication,
         pk=application_id,
     )
+    
+    if adoption_application.status != "pending":
+        return HttpResponseForbidden("Only pending applications can be Denied.")
 
-    if request.method == "POST":
-        adoption_application.status = "denied"
-        adoption_application.reviewed_by = request.user
-        adoption_application.reviewed_at = timezone.now()
-        adoption_application.save()
+    animal = adoption_application.animal
+    adoption_application.status = "denied"
+    adoption_application.reviewed_by = request.user
+    adoption_application.reviewed_at = timezone.now()
+    adoption_application.save()
+    
+    other_active_applications = AdoptionApplication.objects.filter(animal=animal,status__in=["pending", "approved"],).exists()
+    
+    if(not other_active_applications and animal.available == "pending"):
         # Mark the animal as available once an application is denied.
-        animal = adoption_application.animal_id
         animal.available = 'available'
         animal.save()
 

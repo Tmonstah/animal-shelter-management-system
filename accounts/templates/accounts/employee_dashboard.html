@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Employee dashboard-->
-<h1>My Employee Dashboard</h1>
+<h1>My {{staff_role}} Dashboard</h1>
 
 <p>
     Welcome back, {{ request.user.first_name|default:request.user.username }}!
@@ -13,6 +13,23 @@
 <hr>
 <!-- Animal management section only visible with permission-->
 <div class="dashboard-grid">
+
+    {% if perms.adoptions.view_adoptionapplication %}
+        <div>
+            <h2>Adoption Applications</h2>
+
+            <p>
+                View and review customer adoption applications.
+            </p>
+
+            <p>
+                <a href="{% url 'employee_adoption_applications' %}">
+                    Manage Applications
+                </a>
+            </p>
+        </div>
+    {% endif %}
+
     {% if perms.animal.view_animal %}
         <div>
             <h2>Animal Management</h2>
