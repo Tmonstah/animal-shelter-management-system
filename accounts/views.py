@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from .forms import EmployeeProfileForm, CustomerProfileForm, CustomerRegistrationForm, ProfileRegistrationForm
 from .models import EmployeeAccessRequest, EmployeeProfile, EmployeeInvite, CustomerProfile
-
+import uuid
 
 def register_customer(request):
     if request.method == "POST":
@@ -67,8 +67,14 @@ def customer_dashboard(request):
 def employee_dashboard(request):
     if not request.user.is_staff:
         return HttpResponseForbidden("Customers cannot access the employee portal.")
-
-    return render(request, "accounts/employee_dashboard.html")
+	
+    if request.user.is_superuser:
+        staff_role = "Admin"
+    elif request.user.groups.filter(name="Manager").exists():
+        staff_role = "Manager"
+    else:
+        staff_role = "Employee"
+    return render(request, "accounts/employee_dashboard.html", {"staff_role": staff_role,},)
 
 #Login Page Everyone taken here 
 def login_view(request):
@@ -143,7 +149,8 @@ def employee_profile(request): # Customer access prvention Non-Functional
 
     employee_profile, created = EmployeeProfile.objects.get_or_create( # Check if Employee profile exist or else prompt t>
 
-        user=request.user
+        user=request.user,
+	defaults={ "employee_id": f"EMP-{uuid.uuid4().hex[:12].upper()}"},
     )
 
     if request.method == "POST":

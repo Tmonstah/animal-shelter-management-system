@@ -62,7 +62,7 @@
         {% endif %}
 
         <!-- Only pending applications can be approved or denied. -->
-        {% if application.status == "pending" %}
+        {% if application.status == "pending" and perms.adoptions.change_adoptionapplication %}
 
             <form
                 method="post"
