@@ -55,12 +55,10 @@
         {% if user.is_authenticated %} 
             {% if not user.is_staff and not user.is_super_user%}
                 <p>
-                    <a href="{% url 'adoption_application_create' animal.pk %}">
+                    <a class="buttons" href="{% url 'adoption_application_create' animal.pk %}">
                         Apply for Adoption
                     </a>
-                </p>
-                <p>
-                    <a href="{% url 'appointment_create' animal.pk %}">
+                    <a class="buttons" href="{% url 'appointment_create' animal.pk %}">
                         Schedule Meet and Greet
                     </a>
                 </p>
@@ -70,12 +68,12 @@
 
             <p> 
                 To schedule a Meet & Greet or apply for an application
-                <a href="{% url 'login' %}">
+                <a class="buttons" href="{% url 'login' %}">
                     Login
                 </a>
             </p>
 
         {% endif %}
-
+        <br>
     {% endif %}
 {% endblock %}

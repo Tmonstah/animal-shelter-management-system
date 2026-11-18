@@ -15,15 +15,15 @@
         </p>
 
         <h1>Waiting for their Fur-Ever home</h1>
-        <p>Browse all animals here: <a href="{% url 'animal_list' %}">Aniaml Listing</a></p>
+        <p>Browse all animals here: <a href="{% url 'animal_list' %}">Available Animals</a></p>
         <div class="snap-container">
             {% for animal in animals %}
                 {% if animal.available == "available" and animal.image %}
                     <section class="snap-child">
                             <img src="{{ animal.image.url}}" class="animal-image">
-                            <hr>
                             <p><strong>{{ animal.name }}</strong></p>
                             <p>{{ animal.personality_desc }}</p>
+                            <p><a href="{% url 'animal_detail' animal.id %}">Get to know me</a></p>
                     </section>
                 {% endif %}
             {% empty %}

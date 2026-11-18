@@ -168,11 +168,11 @@ footer{
     gap: 10px;
     width: 80%;
 }
-.animal-grid p{
+.animal-grid p {
     text-align: left;
 }
 a
-.animal-grid h3{
+.animal-grid h3 {
     text-align: Center;
     margin-top: 0px;
     padding-top: 0px;
@@ -186,13 +186,12 @@ a
     font-size: 20px;
     text-align: center;
 }
-.animal-image{
+.animal-image {
     width: 200px;
     height: 200px;
     object-fit: cover;
     border-radius: 20px;
 }
-
 
 /* animal_details setup */
 .animal-about {
@@ -327,7 +326,22 @@ a
     margin-bottom: 0px;
     border-radius: 20px;
     border: 1px solid var(--head_foot-background);
+    background-color: var(--background-accent);
 }
 .snap-child img {
-    border-radius: 20px;
+    border-radius: 20px 20px 0 0;
+    padding-bottom: 0px;
+}
+
+.buttons {
+    border-radius: 10px;
+    background-color: var(--background-accent);
+    border: 1px solid var(--head_foot-background);
+    text-decoration: none;
+    color: var(--text1);
+    padding: 5px;
+    margin: 5px;
+}
+.buttons:hover {
+    box-shadow: 0 5px 10px 0 var(--accent)
 }
