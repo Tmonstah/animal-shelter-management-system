@@ -18,14 +18,14 @@ def adoption_form_view(request, pk):
     customer_profile = CustomerProfile.objects.get(
         user=request.user
     )
-    animal_id = get_object_or_404(
+    animal = get_object_or_404(
         Animal,
         pk=pk,
         available="available",
     )
     existing_application = AdoptionApplication.objects.filter(
     	customer_profile=customer_profile,
-    	animal=animal_id.pk,
+    	animal=animal.pk,
     	status="pending",
     ).exists()
 

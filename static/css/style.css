@@ -225,7 +225,7 @@ a
     background-color: var(--background);
     padding-top: 20px;
     gap: 10px;
-    width: 80%;
+    width: fit-content;
 }
 .animal-profile p{
     text-align: left;
