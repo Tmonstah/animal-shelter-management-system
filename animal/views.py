@@ -38,6 +38,9 @@ def animal_list(request):
             animals = animals.filter(age__gte=filters["min_age"])
         if filters["max_age"] is not None:
             animals = animals.filter(age__lte=filters["max_age"])
+        if staff_view:
+            if filters["status"]:
+                animals = animals.filter(available=filters["status"])
 
     if staff_view:
         animals = animals.order_by(
@@ -45,6 +48,7 @@ def animal_list(request):
                 When(available="pending", then=Value(0)),
                 When(available="available", then=Value(1)),
                 When(available="unavailable", then=Value(2)),
+                When(available="adopted", then=Value(4)),
                 default=Value(3),
                 output_field=IntegerField(),
             ),

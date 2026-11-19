@@ -6,8 +6,8 @@
             "animal_type": "Cat",
             "gender": "Female",
             "personality_desc": "Crazy energy",
-            "coloration": "black, orange",
-            "age": 6, 
+            "coloration": "Black, orange",
+            "age": 71, 
             "breed": "American Shorthair",
             "hair_type": "Short",
             "medical_desc": "Healthy",
@@ -16,7 +16,7 @@
 
         }
     },
-        {
+    {
         "model": "animal.Animal",
         "fields": {
             "name": "Ginny",
@@ -24,7 +24,7 @@
             "gender": "Female",
             "personality_desc": "Loves food",
             "coloration": "Brown, white",
-            "age": 1, 
+            "age": 36, 
             "breed": "Abyssinian",
             "hair_type": "Short",
             "medical_desc": "healthy",
@@ -33,7 +33,7 @@
 
         }
     },
-        {
+    {
         "model": "animal.Animal",
         "fields": {
             "name": "Blake",
@@ -41,7 +41,7 @@
             "gender": "Male",
             "personality_desc": "Loves to cuddle",
             "coloration": "Black",
-            "age": 2, 
+            "age": 24, 
             "breed": "Labrador",
             "hair_type": "Short",
             "medical_desc": "Allergies: Air",
@@ -50,20 +50,139 @@
 
         }
     },
-        {
+    {
         "model": "animal.Animal",
         "fields": {
             "name": "Fluffer-Nutter",
             "animal_type": "Rabbit",
             "gender": "Male",
             "personality_desc": "Loves to dart around",
-            "coloration": "Gray/white",
-            "age": 1, 
+            "coloration": "Gray, white",
+            "age": 6, 
             "breed": "Lion Head",
             "hair_type": "Long",
             "medical_desc": "Healthy",
             "available": "available",
             "image": "/animal_pictures/fluffer-nutter.jpg"
+
+        }
+    },
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Bambi",
+            "animal_type": "Deer",
+            "gender": "Male",
+            "personality_desc": "Cute, but a wild animal.",
+            "coloration": "Brown, white",
+            "age": 8, 
+            "breed": "Chital",
+            "hair_type": "Short",
+            "medical_desc": "Sick, not adoptable.",
+            "available": "unavailable",
+            "image": "/animal_pictures/bambi.jpg"
+
+        }
+    },
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Fred",
+            "animal_type": "Cat",
+            "gender": "Male",
+            "personality_desc": "Curious, but his plans always fail.",
+            "coloration": "Orange",
+            "age": 1, 
+            "breed": "American Shorthair",
+            "hair_type": "Short",
+            "medical_desc": "Not vaccinated, too young.",
+            "available": "available",
+            "image": "/animal_pictures/fred.jpg"
+
+        }
+    },
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Velma",
+            "animal_type": "Cat",
+            "gender": "Female",
+            "personality_desc": "Deceivingly smart and sweet.",
+            "coloration": "Black",
+            "age": 1, 
+            "breed": "American Shorthair",
+            "hair_type": "Short",
+            "medical_desc": "Not vaccinated, too young.",
+            "available": "available",
+            "image": "/animal_pictures/velma.jpg"
+
+        }
+    },
+        {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Daphne",
+            "animal_type": "Cat",
+            "gender": "Female",
+            "personality_desc": "Loves cuddles and playing with toys.",
+            "coloration": "White, gray",
+            "age": 1, 
+            "breed": "American Shorthair",
+            "hair_type": "Short",
+            "medical_desc": "Not vaccinated, too young.",
+            "available": "available",
+            "image": "/animal_pictures/daphne.jpg"
+
+        }
+    },
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Scooby",
+            "animal_type": "Cat",
+            "gender": "Male",
+            "personality_desc": "Always gets into trouble.",
+            "coloration": "Brown",
+            "age": 1, 
+            "breed": "American Shorthair",
+            "hair_type": "Short",
+            "medical_desc": "Not vaccinated, too young.",
+            "available": "available",
+            "image": "/animal_pictures/scooby.jpg"
+
+        }
+    },
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Shaggy",
+            "animal_type": "Cat",
+            "gender": "Male",
+            "personality_desc": "A crazy little furball.",
+            "coloration": "Gray",
+            "age": 1, 
+            "breed": "Maine Coon",
+            "hair_type": "Long",
+            "medical_desc": "Not vaccinated, too young.",
+            "available": "available",
+            "image": "/animal_pictures/shaggy.jpg"
+
+        }
+    },
+    {
+        "model": "animal.Animal",
+        "fields": {
+            "name": "Toast",
+            "animal_type": "Dog",
+            "gender": "Male",
+            "personality_desc": "Loves a good piece of burnt toast.",
+            "coloration": "Brown",
+            "age": 8, 
+            "breed": "Mixed",
+            "hair_type": "Short",
+            "medical_desc": "Has fleas",
+            "available": "available",
+            "image": "/animal_pictures/toast.jpg"
 
         }
     }

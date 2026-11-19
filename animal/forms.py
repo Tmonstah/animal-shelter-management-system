@@ -10,12 +10,18 @@ class AnimalFilterForm(forms.Form):
     gender = forms.ChoiceField(required=False, label="Gender")
     min_age = forms.IntegerField(required=False, min_value=0, label="Minimum age")
     max_age = forms.IntegerField(required=False, min_value=0, label="Maximum age")
+    status = forms.ChoiceField(required=False,label="Status")
 
     def __init__(self, *args, include_unavailable=False, **kwargs):
         super().__init__(*args, **kwargs)
         animals = Animal.objects.all()
+
+        self.fields["status"].choices = [("", "All statuses")] + list(
+            Animal.STATUS_CHOICES
+        )
         if not include_unavailable:
             animals = animals.filter(available="available")
+            self.fields.pop("status")
 
         animal_types = (
             animals
