@@ -1,11 +1,30 @@
 {% extends 'shelter_project/base.html' %}
 
 {% block content %}
-    <h2>Edit {{ animal.name }}</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+<h2>Edit {{ animal.name }}</h2>
+<form method="post" enctype="multipart/form-data" class="animal-edit-form">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="form-row">
+            {{ field.label_tag }}
+            {{ field }}
+
+            {% if field.errors %}
+                <div class="form-errors">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+
+            {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div class="form-actions">
         <button type="submit">Save changes</button>
-    </form>
-    <p><a href="{% url 'animal_list' %}">Cancel</a></p>
+        <a href="{% url 'animal_list' %}">Cancel</a>
+    </div>
+</form>
 {% endblock %}

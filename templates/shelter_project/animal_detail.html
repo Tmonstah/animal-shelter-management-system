@@ -29,15 +29,38 @@
             <dd>{{ animal.get_hair_type_display }}</dd>
 
             <dt>Medical Records</dt>
+
             {% for record in animal.medical_records.all %}
-                {% if user.is_superuser or user.is_staff %}
-                    <dd> <strong>-{{ record.record_type }}:</strong> {{ record.description }}</dd>
-                {% else %}
-                    {% if record.record_type == "vaccination" or record.record_type == "injury" %}
-                        <dd> <strong>-{{ record.record_type }}:</strong> {{ record.description }}</dd>
-                    {% endif %}
+
+                {% if user.is_staff and perms.medical.view_medicalrecord %}
+
+                    <dd>
+                        <strong>{{ record.get_record_type_display }}</strong>
+                        ({{ record.record_date }}):
+                        {{ record.description }}
+                    </dd>
+
+                {% elif record.record_type == "vaccination" or record.record_type == "injury" %}
+
+                    <dd>
+                        <strong>{{ record.get_record_type_display }}</strong>:
+                        {{ record.description }}
+                    </dd>
+
                 {% endif %}
+
+            {% empty %}
+                <dd>No medical records available.</dd>
             {% endfor %}
+
+            {% if user.is_staff and perms.medical.add_medicalrecord %}
+                <dd>
+                    <a href="{% url 'medical_record_create' animal.pk %}">
+                        Add Medical Record
+                    </a>
+                </dd>
+            {% endif %}
+
 
             <dt>Adoption status</dt>
             <dd>{{ animal.available }}</dd>
