@@ -2,7 +2,18 @@
 
 {% block content %}
 
-<h1>Employee Profile</h1>
+<h1>My Staff Profile</h1>
+
+<p>
+    <strong>Name:</strong>
+    {{ request.user.get_full_name|default:request.user.username }}
+</p>
+
+<p>
+    <strong>Role:</strong>
+    {{ staff_role }}
+</p>
+
 <!-- Return to the employee dashboard-->
 <p>
     <a href="{% url 'employee_dashboard' %}">Back to Dashboard</a>
