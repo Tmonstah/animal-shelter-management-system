@@ -26,6 +26,7 @@
         <a href="{% url 'animal_list' %}">Clear filters</a>
     </form>
     <br>
+    <!--
     <div class="animal-grid">
         {% for animal in animals %}
             <div class="animal-card">
@@ -44,6 +45,23 @@
         {% empty %}
             <p>No animals are currently available for adoption. Check back soon!</p>
         {% endfor %}
+     -->
+    <div class="animal-grid">
+        {% for animal in animals %}
+            {% if animal.available == "available" and animal.image %}
+                <section class="animal-card">
+                        <img src="{{ animal.image.url}}" class="animal-image">
+                        <p><strong>{{ animal.name }}</strong></p>
+                        <p>Breed: {{ animal.breed }}</p>
+                        <p>Age: {{ animal.age }} Months</p>
+                        <p><a href="{% url 'animal_detail' animal.id %}">Get to know me</a></p>
+                </section>
+            {% endif %}
+        {% empty %}
+            <p>No available animals at the moment.</p>
+        {% endfor %}
+    </div>
+
     </div>
     <br>
 </body>

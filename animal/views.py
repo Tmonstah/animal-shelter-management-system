@@ -104,31 +104,37 @@ def animal_detail(request, animal_id):
     )
 
 
+
+
 @login_required
 def animal_edit(request, animal_id):
     if not (request.user.is_superuser or request.user.is_staff):
-        return HttpResponseForbidden("Only managers can edit animal profiles.")
+        return HttpResponseForbidden(
+            "Only employees and managers can edit animal profiles."
+        )
 
     animal = get_object_or_404(Animal, pk=animal_id)
     was_available = animal.available == "available"
+
     if request.method == "POST":
-        form = AnimalUpdateForm(request.POST, request.FILES, instance=animal)
-        if form.is_valid():
-            becomes_available = (
-                not was_available
-                and form.cleaned_data["available"] == "available"
-            )
-            available_count = Animal.objects.filter(available="available").count()
-            if becomes_available and available_count >= MAX_AVAILABLE_ANIMALS:
-                form.add_error(
-                    "available",
-                    "The shelter already has the maximum of 50 available animals.",
-                )
-            else:
-                form.save()
-                return redirect("animal_list")
+        form = AnimalUpdateForm(request.POST,request.FILES,instance=animal,)
     else:
         form = AnimalUpdateForm(instance=animal)
+
+    # Hide and protect medical description for unauthorized staff.
+    if not request.user.has_perm("medical.change_medicalrecord"):
+        form.fields.pop("medical_desc", None)
+
+    if request.method == "POST" and form.is_valid():
+        becomes_available = (not was_available and form.cleaned_data["available"] == "available")
+
+        available_count = Animal.objects.filter(available="available").count()
+
+        if becomes_available and available_count >= MAX_AVAILABLE_ANIMALS:
+            form.add_error("available","The shelter already has the maximum of 50 available animals.",)
+        else:
+            form.save()
+            return redirect("animal_list")
 
     return render(
         request,

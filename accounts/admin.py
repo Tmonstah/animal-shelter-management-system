@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomerProfile, EmployeeProfile, EmployeeAccessRequest, EmployeeInvite, User
 from django.utils import timezone
+import uuid
 
 admin.site.site_url = "/home/"  # Send the Django admin "View site" button to the shelter home page.
 
@@ -11,7 +12,9 @@ admin.site.register(EmployeeInvite) # Allow superusers to create and manage empl
 
 admin.site.register(CustomerProfile) # Allow superusers to view and manage customer profile information
 
-admin.site.register(EmployeeProfile) # Allow superusers to view and manage employee profile information
+@admin.register(EmployeeProfile) # Allow superusers to view and manage employee profile information
+class EmployeeProfileAdmin(admin.ModelAdmin):
+    readonly_fields = ('hire_date', 'employee_id')
 
 @admin.register(EmployeeAccessRequest) # Allow superusers to review employee access requests
 
@@ -34,6 +37,19 @@ class EmployeeAccessRequestAdmin(admin.ModelAdmin):
         # Give employee access as staff
             employee_request.user.is_staff = True
             employee_request.user.save()
+            customer_profile = CustomerProfile.objects.get(user=employee_request.user)
+
+            EmployeeProfile.objects.create( # Check if Employee profile exist or else prompt t>
+                user=employee_request.user,
+                phone_number=customer_profile.phone_number,
+                address_line_1=customer_profile.address_line_1,
+                address_line_2=customer_profile.address_line_2,
+                city=customer_profile.city,
+                state=customer_profile.state,
+                postal_code=customer_profile.postal_code,
+                employee_id=f"EMP-{uuid.uuid4().hex[:12].upper()}",
+            )
+            customer_profile.delete()
 
         # Change status to approved and record timestamp
             employee_request.status = "approved"

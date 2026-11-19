@@ -18,14 +18,14 @@ def adoption_form_view(request, pk):
     customer_profile = CustomerProfile.objects.get(
         user=request.user
     )
-    animal_id = get_object_or_404(
+    animal = get_object_or_404(
         Animal,
         pk=pk,
         available="available",
     )
     existing_application = AdoptionApplication.objects.filter(
     	customer_profile=customer_profile,
-    	animal=animal_id.pk,
+    	animal=animal.pk,
     	status="pending",
     ).exists()
 
@@ -43,14 +43,14 @@ def adoption_form_view(request, pk):
             application = adoption_form.save(commit=False)
             # Add in the user info that is not seen on form
             application.customer_profile = request.user.customer_profile
-            application.animal = animal_id
+            application.animal = animal
             application.save()
-            animal_id.available = "pending"
-            animal_id.save()
+            animal.available = "pending"
+            animal.save()
             return render(
                 request,
                 "adoption_application_success.html",
-                {"adoption_application_form": application, "animal": animal_id,},
+                {"adoption_application_form": application, "animal": animal,},
             )
 
     else: 
@@ -82,7 +82,7 @@ def adoption_form_view(request, pk):
     return render(
             request,
             "adoption_application.html",
-            {"adoption_application_form": adoption_form, "animal": animal_id,},
+            {"adoption_application_form": adoption_form, "animal": animal,},
     )
 
 # This is the view for customers to see all their applications

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.core.validators import RegexValidator
 from .models import EmployeeProfile, CustomerProfile, EmployeeInvite, User
 
 
@@ -21,13 +22,17 @@ class EmployeeProfileForm(forms.ModelForm): #Employee form to creat update Metad
         model = EmployeeProfile
         fields = (
             "phone_number",
-            "employee_id",
             "job_title",
             "department",
-            "hire_date",
+            "address_line_1",
+            "address_line_2",
+            "city",
+            "state",
+            "postal_code",
         )
 
 class CustomerRegistrationForm(UserCreationForm):
+    required_css_class = "required"
     employee_invite_code = forms.CharField(
         max_length=20,
         required=False,
@@ -45,6 +50,11 @@ class CustomerRegistrationForm(UserCreationForm):
             "password2",
             "employee_invite_code",
         )
+        widgets = {
+            'email': forms.TextInput(
+                attrs={'placeholder': 'e.g, abc123@gmail.com'}
+            )
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,3 +95,65 @@ class CustomerRegistrationForm(UserCreationForm):
             )
 
         return invite_code
+
+# This form allows user to fill out
+class ProfileRegistrationForm(forms.Form):
+    required_css_class = "required"
+    phone_number = forms.CharField(
+        max_length=20,
+        required=True,
+        validators= [
+            RegexValidator(
+                regex='^\+[1-9]\d{1,14}$',
+                message="Enter a phone number in the format +11231234567.",
+                code="invalid_registration",
+            ),
+        ],
+        widget=forms.TextInput(
+            attrs={'placeholder': 'e.g, +11231234567, includes country code'}
+        ),
+        label= "Phone Number",
+    )
+    address_line_1 = forms.CharField(
+        max_length=150, 
+        required=True,
+        label="Address Line 1",
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Street address (e.g, 123 Orange St)'}
+        ),
+    )
+    address_line_2 = forms.CharField(
+        max_length=150,
+        required=False, 
+        label="Address Line 2 (Optional)",
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Apartment, suite, unit, building, etc.'}
+        ),
+    )
+    city = forms.CharField(
+        max_length=100,
+        required=True,
+        label="City",
+        widget=forms.TextInput(
+            attrs={'placeholder': 'City'}
+        ),
+    )
+    state = forms.CharField(
+        max_length=100,
+        required=True,
+        label="State",
+        widget=forms.TextInput(
+            attrs={'placeholder': 'State'}
+        ),
+    )
+    postal_code = forms.CharField(
+        max_length=20,
+        required=True,
+        label="Zip Code",
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Zip Code'}
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

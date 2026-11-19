@@ -49,7 +49,7 @@ def medical_record_create(request, animal_id):
 
 @login_required
 def animal_medical_records(request, animal_id):
-    if not request.user.is_staff:
+    if not request.user.is_staff or not request.user.has_perm("medical.add_medicalrecord"):
         return HttpResponseForbidden(
             "Only employees can view full medical records."
         )

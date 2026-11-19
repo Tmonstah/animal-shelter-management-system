@@ -2,22 +2,21 @@
 
 {% block content %}
 
-<h1>My Staff Profile</h1>
-
-<p>
-    <strong>Name:</strong>
-    {{ request.user.get_full_name|default:request.user.username }}
-</p>
-
-<p>
-    <strong>Role:</strong>
-    {{ staff_role }}
-</p>
-
 <!-- Return to the employee dashboard-->
 <p>
     <a href="{% url 'employee_dashboard' %}">Back to Dashboard</a>
 </p>
+
+<h1>My Staff Profile</h1>
+
+<p>
+    Name: {{ request.user.get_full_name|default:request.user.username }}
+</p>
+
+<p>Hire Date: {{employee_profile.hire_date}}</p>
+<p>Employee ID:{{employee_profile.employee_id}}</p>
+
+
 
 <!-- Employee profile form-->
 <form method="post">
@@ -27,6 +26,7 @@
 
     <button type="submit">Save Profile</button>
 </form>
+
 <p>
     <a href="{% url 'logout' %}">Logout</a>
 </p>
@@ -38,5 +38,6 @@
         {% endfor %}
     </ul>
 {% endif %}
+
 
 {% endblock %}
