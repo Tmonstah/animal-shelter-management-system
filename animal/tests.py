@@ -69,6 +69,8 @@ class AnimalListViewTests(TestCase):
         self.assertContains(response, "Brown")
         self.assertContains(response, "Healthy and vaccinated")
 
+    # Not a valid test anymore as the way to get to a detail page of an unavailble animal
+    # is via an employee profile.
     def test_unavailable_animal_profile_returns_404(self):
         animal = Animal.objects.get(name="Shadow")
 
@@ -76,7 +78,7 @@ class AnimalListViewTests(TestCase):
             reverse("animal_detail", args=[animal.id])
         )
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)
 
     def test_staff_can_view_unavailable_animals_in_listing_and_profile(self):
         staff_user = get_user_model().objects.create_user(
