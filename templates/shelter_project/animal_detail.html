@@ -2,10 +2,11 @@
 
 {% block content %}
     <p><a href="{% url 'animal_list' %}">Back to all animals</a></p>
+    {% if animal.image %}
+        <img class="animal-image-detail" src="{{ animal.image.url }}" alt="{{ animal.name }}">
+    {% endif %}
     <article class="animal-profile">     
-        {% if animal.image %}
-            <img class="animal-image-detail" src="{{ animal.image.url }}" alt="{{ animal.name }}">
-        {% endif %}
+
 
         <dl>
             <h2>{{ animal.name }}</h2>
@@ -48,7 +49,7 @@
 
     {% if user.is_authenticated %}
         {% if user.is_superuser or user.is_staff %}
-            <p><a href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
+            <p><a class="buttons" href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
         {% endif %}
     {% endif %}
     {% if animal.available == "available"%}

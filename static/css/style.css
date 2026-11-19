@@ -162,11 +162,13 @@ footer{
 /* Animal listing setup */
 .animal-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 240px));;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 265px));;
     background-color: var(--background);
     padding: 0px;
-    gap: 10px;
+    gap: 3px;
     width: 80%;
+    margin: 10px;
+
 }
 .animal-grid p {
     text-align: left;
@@ -187,11 +189,25 @@ a
     text-align: center;
 }
 .animal-image {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     object-fit: cover;
     border-radius: 20px;
 }
+
+.animal-card {
+    width: 250px;
+    margin: 10px;
+    padding: 0px;
+    border-radius: 20px;
+    border: 1px solid var(--head_foot-background);
+    background-color: var(--background-accent);
+}
+.animal-card img {
+    border-radius: 20px 20px 0 0;
+    padding-bottom: 0px;
+}
+
 
 /* animal_details setup */
 .animal-about {
@@ -224,7 +240,7 @@ a
     display: grid;
     grid-template-columns: 200px 1fr;
     border-radius: 20px;
-    background-color: var(--background);
+    background-color: var(--background-accent);
     border: 1px solid var(--accent);
     padding: 10px;
     font-size: 20px;
@@ -312,26 +328,59 @@ a
     margin-left: 0px;
     margin-right: 0px;
 }
+
+/* Home page scrolling carousel. Followed https://www.youtube.com/watch?v=gmI5nvzv170 tutorial */
 .snap-container{
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x manditory;
-    scroll-padding: 50%;
+    scroll-behavior: smooth;
+    anchor-name: --snap-Container;
+}
+.snap-container::-webkit-scrollbar{
+    display: none;
+}
+.snap-container::scroll-button(right), .snap-container::scroll-button(left){
+    content: "→";
+    border: none;
+    background-color: var(--accent);
+    color: var(--background);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    padding-bottom: .1em;
+    position: fixed;
+    position-anchor: --snap-Container;
+    position-area: right center;
+    cursor: pointer;
+    translate: -50%;
+}
+.snap-container::scroll-button(left){
+    content: "←";
+    position-area: left center;
+    translate: 50%;
+}
+.snap-container::scroll-button(right):disabled, .snap-container::scroll-button(left):disabled{
+    opacity: 0.5;
+    cursor: auto;
 }
 .snap-child {
     flex-shrink: 0;
-    scroll-snap-align: center;
-    width: 200px;
+    scroll-snap-align: start;
+    width: 250px;
     margin: 20px;
     margin-bottom: 0px;
+    margin-top: auto;
     border-radius: 20px;
     border: 1px solid var(--head_foot-background);
     background-color: var(--background-accent);
+    scroll-padding-inline-start: 30px;
 }
 .snap-child img {
     border-radius: 20px 20px 0 0;
     padding-bottom: 0px;
 }
+
 
 .buttons {
     border-radius: 10px;
@@ -340,6 +389,7 @@ a
     text-decoration: none;
     color: var(--text1);
     padding: 5px;
+    width: auto; 
     margin: 5px;
 }
 .buttons:hover {
