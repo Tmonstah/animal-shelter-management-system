@@ -22,10 +22,13 @@ class EmployeeProfileForm(forms.ModelForm): #Employee form to creat update Metad
         model = EmployeeProfile
         fields = (
             "phone_number",
-            "employee_id",
             "job_title",
             "department",
-            "hire_date",
+            "address_line_1",
+            "address_line_2",
+            "city",
+            "state",
+            "postal_code",
         )
 
 class CustomerRegistrationForm(UserCreationForm):

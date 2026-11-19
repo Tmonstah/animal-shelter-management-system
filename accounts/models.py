@@ -71,7 +71,7 @@ class EmployeeProfile(models.Model): # Front to Backend connection 1:1
     employee_id = models.CharField(max_length=50, unique=True)
     job_title = models.CharField(max_length=100, blank=True)
     department = models.CharField(max_length=100, blank=True)
-    hire_date = models.DateField(null=True, blank=True)
+    hire_date = models.DateField(null=True, blank=True, auto_now_add=True)
     address_line_1 = models.CharField(max_length=150, blank=True)
     address_line_2 = models.CharField(max_length=150, blank=True)
     city = models.CharField(max_length=100, blank=True)

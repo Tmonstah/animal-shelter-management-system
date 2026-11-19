@@ -16,9 +16,21 @@ def register_customer(request):
         if registration_form.is_valid() and profile_registration_form.is_valid():
             user = registration_form.save()# Create the user account after all registration fields are validated.
             # Create profile for every registered customer and collect metadata
-            profile = profile_registration_form.save(commit=False)
-            profile.user = user
-            profile.save()
+            phone_number = profile_registration_form.cleaned_data['phone_number']
+            address_line_1 = profile_registration_form.cleaned_data['address_line_1']
+            address_line_2 = profile_registration_form.cleaned_data['address_line_2']
+            city = profile_registration_form.cleaned_data['city']
+            state = profile_registration_form.cleaned_data['state']
+            postal_code = profile_registration_form.cleaned_data['postal_code']
+            CustomerProfile.objects.create(
+                user=user,
+                phone_number=phone_number,
+                address_line_1=address_line_1,
+                address_line_2=address_line_2,
+                city=city,
+                state=state,
+                postal_code=postal_code,
+            )
 
             invite_code = registration_form.cleaned_data.get(   # Check whether the registrant supplied an employee invite code.
                 "employee_invite_code"
@@ -147,10 +159,8 @@ def employee_profile(request): # Customer access prvention Non-Functional
             "Customers cannot access the employee profile page."
         )
 
-    employee_profile, created = EmployeeProfile.objects.get_or_create( # Check if Employee profile exist or else prompt t>
-
+    employee_profile = EmployeeProfile.objects.get( # Check if Employee profile exist or else prompt t>
         user=request.user,
-	defaults={ "employee_id": f"EMP-{uuid.uuid4().hex[:12].upper()}"},
     )
 
     if request.method == "POST":
@@ -158,6 +168,8 @@ def employee_profile(request): # Customer access prvention Non-Functional
             request.POST,
             instance=employee_profile,
         )
+        employee_profile_form.fields['job_title'].disabled = True
+        employee_profile_form.fields['department'].disabled = True
 
         if employee_profile_form.is_valid():
             employee_profile_form.save()
@@ -170,6 +182,8 @@ def employee_profile(request): # Customer access prvention Non-Functional
         employee_profile_form = EmployeeProfileForm(
             instance=employee_profile
         )
+        employee_profile_form.fields['job_title'].disabled = True
+        employee_profile_form.fields['department'].disabled = True
 	
     
     is_manager = request.user.groups.filter(name="Manager").exists()
@@ -179,8 +193,9 @@ def employee_profile(request): # Customer access prvention Non-Functional
         request,
         "accounts/employee_profile.html",
         {
-            "employee_profile_form": employee_profile_form,
-	    "staff_role": "Manager" if is_manager else "Employee",
+            "employee_profile_form": employee_profile_form, 
+            "employee_profile":employee_profile,
+	        "staff_role": "Manager" if is_manager else "Employee",
         },
     )
 
