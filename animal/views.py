@@ -102,7 +102,7 @@ def animal_detail(request, animal_id):
     animal_query = Animal.objects.all().prefetch_related("medical_records")
     animal = get_object_or_404(animal_query, pk=animal_id)
     if animal.available == "unavailable":
-        if request.user.is_authenticated and (request.user.is_staff or request.user.is_super_user):
+        if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser):
             return render(
                 request,
                 "shelter_project/animal_detail.html",
