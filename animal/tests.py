@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 from animal.models import Animal
 from django.contrib.auth import get_user_model
-from accounts.models import EmployeeInvite, EmployeeAccessRequest, User, generate_invite_code
 
 class AnimalListViewTests(TestCase):
     def setUp(self):
