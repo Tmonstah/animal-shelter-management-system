@@ -3,13 +3,16 @@ from django.db import models
 # Animal model
 class Animal(models.Model):
     # Animals gender and hair type have predefined choices.
-    MALE = "M"
-    FEMALE = "F"
-    LONG = "LONG"
-    SHORT = "SHORT"
-    MED = "MEDIUM"
-    ANIMAL_GENDER_CHOICES = {MALE: "Male", FEMALE: "Female"}
-    ANIMAL_HAIR_TYPE_CHOICES = {LONG: "Long", SHORT: "Short", MED: "Medium"}
+    ANIMAL_GENDER_CHOICES = [
+        ("Male", "Male"),
+        ("Female", "Female"),
+    ]
+
+    ANIMAL_HAIR_TYPE_CHOICES = [
+        ("Long", "Long"),
+        ("Short", "Short"),
+        ("Medium", "Medium"),
+    ]
 
     STATUS_CHOICES = [
         

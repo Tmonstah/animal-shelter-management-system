@@ -31,7 +31,12 @@
         {% for animal in animals %}
             {% if user.is_authenticated and user.is_staff or user.is_authenticated and user.is_superuser %}
                 <section class="animal-card">
-                        <img src="{{ animal.image.url}}" class="animal-image">
+                        {% if animal.image %}
+                            <img src="{{ animal.image.url}}" class="animal-image">
+                        {% else %}
+                            <p>Animal image not yet available.</p>
+                            <br>
+                        {% endif %}
                         <p><strong>{{ animal.name }}</strong></p>
                         <p>Breed: {{ animal.breed }}</p>
                         <p>Age: {{ animal.age }} Months</p>
@@ -39,13 +44,18 @@
                         <p><a href="{% url 'animal_detail' animal.id %}">Get to know me</a></p>
                 </section>
             {% else %}
-                {% if animal.available == "available" and animal.image %}
+                {% if animal.available == "available" %}
                     <section class="animal-card">
+                        {% if animal.image %}
                             <img src="{{ animal.image.url}}" class="animal-image">
-                            <p><strong>{{ animal.name }}</strong></p>
-                            <p>Breed: {{ animal.breed }}</p>
-                            <p>Age: {{ animal.age }} Months</p>
-                            <p><a href="{% url 'animal_detail' animal.id %}">Get to know me</a></p>
+                        {% else %}
+                            <p>Animal image not yet available.</p>
+                            <br>
+                        {% endif %}
+                        <p><strong>{{ animal.name }}</strong></p>
+                        <p>Breed: {{ animal.breed }}</p>
+                        <p>Age: {{ animal.age }} Months</p>
+                        <p><a href="{% url 'animal_detail' animal.id %}">Get to know me</a></p>
                     </section>
                 {% endif %}
             {% endif %}

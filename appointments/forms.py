@@ -1,5 +1,7 @@
 from django import forms
 from datetime import date
+from django.utils import timezone
+from datetime import datetime
 from .models import Appointment
 
 
@@ -56,3 +58,15 @@ class AppointmentForm(forms.ModelForm):
             )
 
         return appointment_date
+
+    def clean_appointment_time(self):
+        cleaned_data = super().clean()
+        appointment_time = cleaned_data.get("appointment_time")
+        appointment_date = cleaned_data.get("appointment_date")
+        appointment_time = datetime.strptime( appointment_time, "%H:%M").time()
+        if appointment_time < timezone.localtime().time() and appointment_date == date.today():
+            raise forms.ValidationError(
+                "Appointment time cannot be in the past."
+            )
+
+        return appointment_time

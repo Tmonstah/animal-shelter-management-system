@@ -77,6 +77,7 @@
     {% if user.is_authenticated %}
         {% if user.is_superuser or user.is_staff %}
             <p><a class="buttons" href="{% url 'animal_edit' animal.pk %}">Edit animal profile</a></p>
+            <br>
         {% endif %}
     {% endif %}
     {% if animal.available == "available"%}

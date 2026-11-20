@@ -42,7 +42,7 @@ class AnimalFilterForm(forms.Form):
             (breed, breed) for breed in breeds
         ]
         self.fields["gender"].choices = [("", "All genders")] + list(
-            Animal.ANIMAL_GENDER_CHOICES.items()
+            Animal.ANIMAL_GENDER_CHOICES
         )
 
     def clean(self):

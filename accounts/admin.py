@@ -74,6 +74,19 @@ class EmployeeAccessRequestAdmin(admin.ModelAdmin):
         if obj.status == "approved":
             obj.user.is_staff = True
             obj.reviewed_at = timezone.now()
+            customer_profile = CustomerProfile.objects.get(user=obj.user)
+
+            EmployeeProfile.objects.create( # Check if Employee profile exist or else prompt t>
+                user=obj.user,
+                phone_number=customer_profile.phone_number,
+                address_line_1=customer_profile.address_line_1,
+                address_line_2=customer_profile.address_line_2,
+                city=customer_profile.city,
+                state=customer_profile.state,
+                postal_code=customer_profile.postal_code,
+                employee_id=f"EMP-{uuid.uuid4().hex[:12].upper()}",
+            )
+            customer_profile.delete()
 
         elif obj.status == "denied":
             obj.user.is_staff = False
